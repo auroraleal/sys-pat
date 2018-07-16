@@ -162,10 +162,6 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                             <td>Meta Executada</td>
                             <td><input type="text" name="" class="form-control" placeholder=""></td>
                           </tr>
-                          <tr>
-                            <td>Percentual Atingido</td>
-                            <td><input type="text" name="" class="form-control" placeholder=""></td>
-                          </tr>
                         </table>
                       </div>
                       <div class="col-md-4">
@@ -180,10 +176,6 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                           </tr>
                           <tr>
                             <td>Meta Executada</td>
-                            <td><input type="text" name="" class="form-control" placeholder=""></td>
-                          </tr>
-                          <tr>
-                            <td>Percentual Atingido</td>
                             <td><input type="text" name="" class="form-control" placeholder=""></td>
                           </tr>
                         </table>
@@ -202,11 +194,19 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                               <td>Meta Executada</td>
                               <td><input type="text" name="" class="form-control" placeholder=""></td>
                             </tr>
-                            <tr>
-                              <td>Percentual Atingido</td>
-                              <td><input type="text" name="" class="form-control" placeholder=""></td>
-                            </tr>
-                          </table>
+                        </table>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group" style="margin-top: 10px">
+                          <label>Justificativa das Metas não Executadas</label>
+                          <textarea class="form-control" rows="5" name=""></textarea>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group" style="margin-top: 10px">
+                          <label>Meta Extra Programada</label>
+                          <textarea class="form-control" rows="5" name=""></textarea>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -239,10 +239,6 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                             <td>Meta Executada</td>
                             <td><input type="text" name="" class="form-control" placeholder=""></td>
                           </tr>
-                          <tr>
-                            <td>Percentual Atingido</td>
-                            <td><input type="text" name="" class="form-control" placeholder=""></td>
-                          </tr>
                         </table>
                       </div>
                       <div class="col-md-4">
@@ -257,10 +253,6 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                           </tr>
                           <tr>
                             <td>Meta Executada</td>
-                            <td><input type="text" name="" class="form-control" placeholder=""></td>
-                          </tr>
-                          <tr>
-                            <td>Percentual Atingido</td>
                             <td><input type="text" name="" class="form-control" placeholder=""></td>
                           </tr>
                         </table>
@@ -279,11 +271,19 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                               <td>Meta Executada</td>
                               <td><input type="text" name="" class="form-control" placeholder=""></td>
                             </tr>
-                            <tr>
-                              <td>Percentual Atingido</td>
-                              <td><input type="text" name="" class="form-control" placeholder=""></td>
-                            </tr>
-                          </table>
+                        </table>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group" style="margin-top: 10px">
+                          <label>Justificativa das Metas não Executadas</label>
+                          <textarea class="form-control" rows="5" name=""></textarea>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group" style="margin-top: 10px">
+                          <label>Meta Extra Programada</label>
+                          <textarea class="form-control" rows="5" name=""></textarea>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -316,10 +316,6 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                             <td>Meta Executada</td>
                             <td><input type="text" name="" class="form-control" placeholder=""></td>
                           </tr>
-                          <tr>
-                            <td>Percentual Atingido</td>
-                            <td><input type="text" name="" class="form-control" placeholder=""></td>
-                          </tr>
                         </table>
                       </div>
                       <div class="col-md-4">
@@ -334,10 +330,6 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                           </tr>
                           <tr>
                             <td>Meta Executada</td>
-                            <td><input type="text" name="" class="form-control" placeholder=""></td>
-                          </tr>
-                          <tr>
-                            <td>Percentual Atingido</td>
                             <td><input type="text" name="" class="form-control" placeholder=""></td>
                           </tr>
                         </table>
@@ -356,11 +348,19 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                               <td>Meta Executada</td>
                               <td><input type="text" name="" class="form-control" placeholder=""></td>
                             </tr>
-                            <tr>
-                              <td>Percentual Atingido</td>
-                              <td><input type="text" name="" class="form-control" placeholder=""></td>
-                            </tr>
                           </table>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group" style="margin-top: 10px">
+                          <label>Justificativa das Metas não Executadas</label>
+                          <textarea class="form-control" rows="5" name=""></textarea>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group" style="margin-top: 10px">
+                          <label>Meta Extra Programada</label>
+                          <textarea class="form-control" rows="5" name=""></textarea>
+                        </div>
                       </div>
                     </div>
                   </div>
