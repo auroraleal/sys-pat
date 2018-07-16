@@ -214,6 +214,8 @@ CREATE TABLE IF NOT EXISTS `pat`.`perfil` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
+INSERT INTO `pat`.`perfil` (`nome`) VALUES ('Administrador');
+INSERT INTO `pat`.`perfil` (`nome`) VALUES ('Técnico');
 
 -- -----------------------------------------------------
 -- Table `pat`.`usuario`
@@ -233,7 +235,7 @@ CREATE TABLE IF NOT EXISTS `pat`.`usuario` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
+INSERT INTO `pat`.`usuario` (`nome`, `email`, `senha`, `perfil_id`) VALUES ('admin', 'admin@macapa.ap.gov.br', md5('123456'), 1);
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
