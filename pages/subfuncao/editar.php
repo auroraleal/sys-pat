@@ -17,8 +17,6 @@ catch(PDOException $e)
   $_SESSION['erro'] = "Erro: " . $e->getMessage();
 }
 
-
-
 ?>
 
 <!DOCTYPE html>

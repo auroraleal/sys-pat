@@ -66,15 +66,26 @@ include '../../utils/valida_login.php';
             <!-- /.box-header -->
             <form role="form" action="../../controllers/subfuncao/new_tipo.php" method="post">
             <div class="box-body">
-              
-            <div class="col-md-4">
-              <div class="form-group">
-                      <label>Nome</label>
-                      <input type="text" name= "nome" class="form-control" placeholder="Digite o nome">
+              <div class="col-md-3">
+                  <div class="form-group">
+                      <label>Função</label>
+                      <select type="text" class="form-control" placeholder="" name="funcao_id">
+                          <option value=""> Selecione </option>
+                          <?php
+                            foreach($conn->query('SELECT * FROM funcao') as $row) {
+                              echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
+                            }       
+                          ?>
+                      </select>
                   </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                        <label>Nome</label>
+                        <input type="text" name= "nome" class="form-control" placeholder="Digite o nome">
+                    </div>
+              </div>
             </div>
-          
-</div>
             <div class="box-footer">
               <button type="submit" class="btn btn-success" style="margin-left: 15px">Cadastrar</button>
             </div>

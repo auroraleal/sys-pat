@@ -3,7 +3,9 @@ session_start();
 include '../../utils/bd.php';
 include '../../utils/valida_login.php';
 
-$stmt = $conn->prepare("SELECT sf.id, sf.nome FROM subfuncao sf ;");
+$stmt = $conn->prepare("SELECT f.nome AS funcao, sf.id, sf.nome 
+AS subfuncao FROM subfuncao sf
+INNER JOIN funcao f ON f.id = sf.funcao_id");
 $stmt->execute();
 
 ?>
@@ -80,7 +82,9 @@ $stmt->execute();
               <table id="tabela" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th style="text-align: center">Nome</th>
+                  <th style="text-align: center">Função</th>
+                  <th style="text-align: center">Subfunção</th>
+                  <th style="text-align: center">Opções</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -90,7 +94,8 @@ $stmt->execute();
                     {
                       $id = $row['id'];
                       echo '<tr>';
-                        echo "<td align='center'>" . $row['nome'] . '</td>';
+                        echo "<td align='center'>" . $row['funcao'] . '</td>';
+                        echo "<td align='center'>" . $row['subfuncao'] . '</td>';
                         echo "<td align='center'>" . "<a href='../../controllers/subfuncao/excluir.php?id=$id' class='btn btn-danger'><i class='fa fa-trash'></i></a>";
                         echo "&nbsp&nbsp". "<a href='editar.php?id=$id' class='btn btn-default'><i class='fa fa-edit'></i></a>"  . '</td>';
                       echo '</tr>';

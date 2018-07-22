@@ -30,7 +30,14 @@ include '../../utils/valida_login.php';
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
-
+  <style>
+    table, th, td {
+        border: 1px solid black;
+        height: 30px;
+        width: 400px;
+        text-align: center;
+    }
+</style>
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
@@ -72,105 +79,48 @@ include '../../utils/valida_login.php';
                      </div>
 		        </div>
                     
-                    <div class="col-md-3">
+                    <div class="col-md-4">
 		        	<div class="form-group">
                   		<label>Função</label>
-		                  <select class="form-control" name="funcao">
+		                  <select class="form-control" id="funcao" name="funcao">
 		                    <option value="">Selecione</option>
-                      <?php
-                          foreach($conn->query('SELECT * FROM funcao') as $row) {
-                              echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
-                          }       
-                      ?>
+                            <?php
+                                foreach($conn->query('SELECT * FROM funcao') as $row) {
+                                    echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
+                                }       
+                            ?>
 		                  </select>
                 	</div>
 		        </div>
-
-		        <div class="col-md-3">
+		        <div class="col-md-4">
 		        	<div class="form-group">
                   		<label>Subfunção</label>
-		                  <select class="form-control" name="subfuncao">
+		                  <select class="form-control" id="subfuncao" name="subfuncao">
 		                    <option value="">Selecione</option>
-                      <?php
-                          foreach($conn->query('SELECT * FROM subfuncao') as $row) {
-                              echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
-                          }       
-                      ?>
 		                  </select>
                 	</div>
 		        </div>
                 <!-- text input -->
 
                 <div class="col-md-2">
-                <div class="form-group">
-                <label>Orgão</label>
-                <select type="text" class="form-control" placeholder="" name="orgao">
-                  <option value=""> Selecione </option>
-                  <?php
-                  foreach($conn->query('SELECT * FROM orgao') as $row) {
-                    echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
-                }       
-            ?>
-            </select>
-                </div>
-                </div>
-
-                <div class="col-md-4">
                     <div class="form-group">
-                    <label>Programa</label>
-                    <select class="form-control" name="programa">
-                        <option value="">Selecione</option>
-                        <?php
-                            foreach($conn->query('SELECT * FROM programa') as $row) {
-                                echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
-                            }       
-                        ?>
-                        </select> 
+                        <label>Orgão</label>
+                        <select type="text" class="form-control" placeholder="" id="orgao" name="orgao">
+                            <option value=""> Selecione </option>
+                            <?php
+                                foreach($conn->query('SELECT * FROM orgao') as $row) {
+                                    echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
+                                }       
+                            ?>
+                        </select>
                     </div>
-                </div>                
-
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label>Fonte do Recurso</label>
-                    <input disabled type="text" class="form-control" placeholder= "" name="fonte"/>
-                </div>
                 </div>
 
-                <div class="col-md-2">
-                    <div class="form-group">
-                    <label>Recurso Disponível</label>
-                    <input disabled type="text" class="form-control" placeholder="" name="recurso"/>
-                </div>
-            </div>
-
-             <div class="col-md-2">
-		        	<div class="form-group">
-                  		<label>Período Início</label>
-		                <input type="date" class="form-control" name="periodo_inicio">  
-                	</div>
-                </div>              
-
-                <div class="col-md-2">
-		        	<div class="form-group">
-                  		<label>Período Fim</label>
-		                <input type="date" class="form-control" name="periodo_fim">  
-                	</div>
-		        </div>
-
-
-            
-
-            <div class="col-md-3">
+                
+            <div class="col-md-4">
                 <div class="form-group">
                     <label>Unidade Orçamentária</label>
-                    <select type="text" class="form-control" placeholder="" name="unidade_orc">
-                        <option value=""> Selecione </option>
-                        <?php
-                        foreach($conn->query('SELECT * FROM orgao') as $row) {
-                            echo '<option value="'.$row['id'].'">'.$row['unidade_orcamentaria'].'</option>';
-                        }       
-                        ?>
-                    </select>
+                    <input disabled type="text" class="form-control" placeholder="" id="unidade_orc" name="unidade_orc">
                 </div>
             </div>
 
@@ -181,22 +131,60 @@ include '../../utils/valida_login.php';
                 </div>
             </div> 
 
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="form-group">
                   <label>Ano</label>
                   <input type="text" class="form-control" placeholder="Digite o ano" id="ano" name="ano">  
 		        </div>
             </div>
+            <div class="col-md-3 col-md-offset-3">
+		        	<div class="form-group">
+                  		<label>Período Início</label>
+		                <input type="date" class="form-control" name="periodo_inicio">  
+                	</div>
+                </div>              
+
+                <div class="col-md-3">
+		        	<div class="form-group">
+                  		<label>Período Fim</label>
+		                <input type="date" class="form-control" name="periodo_fim">  
+                	</div>
+                </div>
+                <div class="col-md-3 col-md-offset-2">
+                    <div class="form-group">
+                        <label>Programa</label>
+                        <select class="form-control" name="programa">
+                            <option value="">Selecione</option>
+                        </select> 
+                    </div>
+                </div>
+                
+                <div id="fonte_recurso" class="col-md-6">
+                    <table>
+                        <tr>
+                            <td><b>Fonte do Recurso</b></td>
+                            <td><b>Recurso Disponível</b></td>
+                        </tr>
+                        <tr>
+                            <td>Tesouro</td>
+                            <td>R$ 1.234,21</td>
+                        </tr>
+                        <tr>
+                            <td>ETC</td>
+                            <td>R$ 45.654,62</td>
+                        </tr>
+                    </table>
+                </div>
             <div class="col-md-12">
                 <div class="form-group">
                   <label>Objetivo</label>
-                  <textarea class="form-control" rows="5" placeholder="texto" name="objetivo"></textarea>
+                  <textarea class="form-control" rows="5" placeholder="" name="objetivo"></textarea>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">
                   <label>Resultado Esperado</label>
-                  <textarea class="form-control" rows="5" placeholder="texto" name="resultado"></textarea>
+                  <textarea class="form-control" rows="5" placeholder="" name="resultado"></textarea>
                 </div>
             </div>
             </div>
@@ -226,9 +214,22 @@ include '../../utils/valida_login.php';
 <script src="../../dist/js/adminlte.min.js"></script>
 
 <script>
-  $(document).ready(function () {
-    $('.date').mask('00/00/0000');
-    $('.money').mask('000.000.000.000.000,00', {reverse: true});
+  $(funcao).change(function () {
+    var valor = $('#funcao').find(":selected").val();
+    
+    $.get('../../controllers/subfuncao/lista-subfuncao.php?find=' + valor, function(data) {
+        $('#subfuncao').find('option').remove();
+        $('#subfuncao').append(data);
+    });
+  });
+
+  $(orgao).change(function () {
+    var valor = $('#orgao').find(":selected").val();
+    
+    $.get('../../controllers/orgao/lista-unidade-orcamentaria.php?find=' + valor, function(data) {
+        $('#unidade_orc').val('');
+        $('#unidade_orc').val(data);
+    });
   });
 </script>
 </body>

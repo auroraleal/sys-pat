@@ -4,17 +4,15 @@ include '../../utils/bd.php';
 include '../../utils/valida_login.php';
 
 
-$stmt = $conn->prepare("INSERT INTO subfuncao(nome) 
-values(:nome)");
+$stmt = $conn->prepare("INSERT INTO subfuncao(funcao_id, nome) values(:funcao_id, :nome)");
 
+$stmt->bindParam(':funcao_id', $_POST['funcao_id']);
 $stmt->bindParam(':nome', $_POST['nome']);
 
 try
 {
-	
 	$stmt->execute();
-	$_SESSION['msg'] = "Novo Subfunção cadastrada com sucesso";
-
+	$_SESSION['msg'] = "Nova Subfunção cadastrada com sucesso";
 
 	$usuario_id = $_SESSION['id'];
 	$operpat = 'EDITAR';

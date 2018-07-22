@@ -49,7 +49,7 @@
             <ul class="treeview-menu">
             <li><a href="/sys-pat/pages/relatorios/listar.php"><i class="fa   fa-filter"></i> Relatórios</a></li>
             <li class="treeview">
-          <a href="#">
+            <a href="#">
             <i class="fa   fa-archive"></i> <span>Programas</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -57,6 +57,15 @@
             <ul class="treeview-menu">
               <li><a href="/sys-pat/pages/programa/novo_tipo.php"><i class="fa  fa-pencil"></i>Cadastrar Programa</a></li>
               <li><a href="/sys-pat/pages/programa/listar.php"><i class="fa fa-list"></i>Listar Programas</a></li>
+            </ul>
+            <a href="#">
+            <i class="fa fa-usd"></i> <span>Recurso</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            <ul class="treeview-menu">
+              <li><a href="/sys-pat/pages/subfuncao/novo_tipo.php"><i class="fa  fa-pencil"></i>Cadastrar SubFunção</a></li>
+              <li><a href="/sys-pat/pages/subfuncao/listar.php"><i class="fa fa-list"></i>Listar SubFunções</a></li>
             </ul>
 
             <a href="#">
@@ -78,7 +87,6 @@
               <li><a href="/sys-pat/pages/subfuncao/listar.php"><i class="fa fa-list"></i>Listar SubFunções</a></li>
             </ul>
 
-            
             <a href="#">
             <i class="fa   fa-building"></i> <span>Órgãos</span>
             <span class="pull-right-container">
