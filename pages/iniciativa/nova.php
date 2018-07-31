@@ -5,7 +5,7 @@ include '../../utils/valida_login.php';
 
 $acao_id = $_GET['id'];
 
-$stmt = $conn->prepare("SELECT a.nome as acao, p.nome as programa FROM acao a 
+$stmt = $conn->prepare("SELECT a.quantidade_iniciativas, a.nome as acao, p.nome as programa FROM acao a 
                           INNER JOIN programa p ON a.programa_id = p.id
                         WHERE a.id = $acao_id;");
 $stmt->execute();
@@ -77,7 +77,9 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <form role="form" action="../../controllers/acao/new-acao.php" method="post">
+              <form role="form" action="../../controllers/iniciativa/new-iniciativa.php" method="post">
+                <input type="hidden" name="acao_id" value="<?=$acao_id?>"/>
+                <input type="hidden" name="quantidade_iniciativas" value="<?=$row['quantidade_iniciativas']?>"/>
                 <h4>Acão: <b><?php echo $row['acao']?></b></h4>
                 <h4>Programa: <b><?php echo $row['programa']?></b></h4>
                 <div style="border: 1px solid black; padding: 15px;">
@@ -88,15 +90,15 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                       <table>
                         <tr>
                           <td></td>
-                          <td><b>Primeiro Quadrimestre</b></td>
+                          <td align="center"><b>Quadrimestre 1</b></td>
                         </tr>
                         <tr>
                           <td>Inicial</td>
-                          <td><input type="text" name="" class="form-control" placeholder=""></td>
+                          <td><input type="text" name="quad_1_inicial" class="form-control" placeholder=""></td>
                         </tr>
                         <tr>
                           <td>Atual</td>
-                          <td><input type="text" name="" class="form-control" placeholder=""></td>
+                          <td><input type="text" name="quad_1_atual" class="form-control" placeholder=""></td>
                         </tr>
                       </table>
                     </div>
@@ -104,15 +106,15 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                       <table>
                         <tr>
                           <td></td>
-                          <td><b>Segundo Quadrimestre</b></td>
+                          <td align="center"><b>Quadrimestre 2</b></td>
                         </tr>
                         <tr>
                           <td>Inicial</td>
-                          <td><input type="text" name="" class="form-control" placeholder=""></td>
+                          <td><input type="text" name="quad_2_inicial" class="form-control" placeholder=""></td>
                         </tr>
                         <tr>
                           <td>Atual</td>
-                          <td><input type="text" name="" class="form-control" placeholder=""></td>
+                          <td><input type="text" name="quad_2_atual" class="form-control" placeholder=""></td>
                         </tr>
                       </table>
                     </div>
@@ -120,254 +122,82 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                       <table>
                         <tr>
                           <td></td>
-                          <td><b>Terceiro Quadrimestre</b></td>
+                          <td align="center"><b>Quadrimestre 3</b></td>
                         </tr>
                         <tr>
                           <td>Inicial</td>
-                          <td><input type="text" name="" class="form-control" placeholder=""></td>
+                          <td><input type="text" name="quad_3_inicial" class="form-control" placeholder=""></td>
                         </tr>
                         <tr>
                           <td>Atual</td>
-                          <td><input type="text" name="" class="form-control" placeholder=""></td>
+                          <td><input type="text" name="quad_3_atual" class="form-control" placeholder=""></td>
                         </tr>
                       </table>
                     </div>
                   </div>
                 </div>
                 <br>
-                <a class="btn btn-success" role="button" data-toggle="collapse" href="#collapse1" aria-expanded="false" aria-controls="collapseExample">
-                  Iniciativa 1
-                </a>
-                <br> <br>
-                <div class="collapse" id="collapse1">
-                  <div class="col-md-12">
-                    <div class="form-group" style="margin-top: 10px">
-                      <label>Descrição</label>
-                      <textarea class="form-control" rows="5" name=""></textarea>
-                    </div>
-                  </div>
-                  <div style="border: 1px solid black; padding: 15px;">
-                    <div class="row">
-                      <div class="col-md-4">
-                        <table>
-                          <tr>
-                            <td></td>
-                            <td><b>Primeiro Quadrimestre</b></td>
-                          </tr>
-                          <tr>
-                            <td>Meta Planejada</td>
-                            <td><input type="text" name="" class="form-control" placeholder=""></td>
-                          </tr>
-                          <tr>
-                            <td>Meta Executada</td>
-                            <td><input type="text" name="" class="form-control" placeholder=""></td>
-                          </tr>
-                        </table>
-                      </div>
-                      <div class="col-md-4">
-                      <table>
-                          <tr>
-                            <td></td>
-                            <td><b>Segundo Quadrimestre</b></td>
-                          </tr>
-                          <tr>
-                            <td>Meta Planejada</td>
-                            <td><input type="text" name="" class="form-control" placeholder=""></td>
-                          </tr>
-                          <tr>
-                            <td>Meta Executada</td>
-                            <td><input type="text" name="" class="form-control" placeholder=""></td>
-                          </tr>
-                        </table>
-                      </div>
-                      <div class="col-md-4">
-                        <table>
-                            <tr>
-                              <td></td>
-                              <td><b>Terceiro Quadrimestre</b></td>
-                            </tr>
-                            <tr>
-                              <td>Meta Planejada</td>
-                              <td><input type="text" name="" class="form-control" placeholder=""></td>
-                            </tr>
-                            <tr>
-                              <td>Meta Executada</td>
-                              <td><input type="text" name="" class="form-control" placeholder=""></td>
-                            </tr>
-                        </table>
-                      </div>
-                      <div class="col-md-12">
-                        <div class="form-group" style="margin-top: 10px">
-                          <label>Justificativa das Metas não Executadas</label>
-                          <textarea class="form-control" rows="5" name=""></textarea>
+                <?php
+                  $iniciativas = "";
+                  for ($i = 1; $i <= $row['quantidade_iniciativas']; $i++) {
+                    $iniciativas .= 
+                      "
+                      <a class='btn btn-success' role='button' data-toggle='collapse' href='#collapse$i' aria-expanded='false' aria-controls='collapseExample'>
+                        Iniciativa " . $i .
+                      "</a>
+                      <br> <br>
+                      <div class='collapse' id='collapse$i'>
+                        <div class='col-md-12'>
+                          <div class='form-group' style='margin-top: 10px'>
+                            <label>Descrição</label>
+                            <textarea class='form-control' rows='5' name='descricao_iniciativa$i'></textarea>
+                          </div>
                         </div>
-                      </div>
-                      <div class="col-md-12">
-                        <div class="form-group" style="margin-top: 10px">
-                          <label>Meta Extra Programada</label>
-                          <textarea class="form-control" rows="5" name=""></textarea>
+                        <div style='border: 1px solid black; padding: 15px;'>
+                          <div class='row'>";
+                              for ($y = 1; $y <= 3; $y++) {
+                                $iniciativas .= 
+                                "<div class='col-md-4'>
+                                  <table>
+                                    <tr>
+                                      <td></td>
+                                      <td align='center'><b>Quadrimestre $y</b></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Percentual Planejado</td>
+                                      <td><input type='text' name='quad_perc_plan$i$y' class='form-control' placeholder=''></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Percentual Executado</td>
+                                      <td><input type='text' name='quad_perc_exec$i$y' class='form-control' placeholder=''></td>
+                                    </tr>
+                                  </table>
+                                </div>";
+                              }
+                            $iniciativas .=   
+                            "</div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
+                      <br>  
+                      ";
+                  }
+                  echo $iniciativas;
+                ?>
+                
+                <div class="col-md-12">
+                  <div class="form-group" style="margin-top: 10px">
+                    <label>Justificativa das Metas não Executadas</label>
+                    <textarea class="form-control" rows="5" name="justificativa_metas_n_exec"></textarea>
                   </div>
                 </div>
-                <br>
-                <a class="btn btn-success" role="button" data-toggle="collapse" href="#collapse2" aria-expanded="false" aria-controls="collapseExample">
-                  Iniciativa 2
-                </a>
-                <br> <br>
-                <div class="collapse" id="collapse2">
-                  <div class="col-md-12">
-                    <div class="form-group" style="margin-top: 10px">
-                      <label>Descrição</label>
-                      <textarea class="form-control" rows="5" name=""></textarea>
-                    </div>
-                  </div>
-                  <div style="border: 1px solid black; padding: 15px;">
-                    <div class="row">
-                      <div class="col-md-4">
-                        <table>
-                          <tr>
-                            <td></td>
-                            <td><b>Primeiro Quadrimestre</b></td>
-                          </tr>
-                          <tr>
-                            <td>Meta Planejada</td>
-                            <td><input type="text" name="" class="form-control" placeholder=""></td>
-                          </tr>
-                          <tr>
-                            <td>Meta Executada</td>
-                            <td><input type="text" name="" class="form-control" placeholder=""></td>
-                          </tr>
-                        </table>
-                      </div>
-                      <div class="col-md-4">
-                      <table>
-                          <tr>
-                            <td></td>
-                            <td><b>Segundo Quadrimestre</b></td>
-                          </tr>
-                          <tr>
-                            <td>Meta Planejada</td>
-                            <td><input type="text" name="" class="form-control" placeholder=""></td>
-                          </tr>
-                          <tr>
-                            <td>Meta Executada</td>
-                            <td><input type="text" name="" class="form-control" placeholder=""></td>
-                          </tr>
-                        </table>
-                      </div>
-                      <div class="col-md-4">
-                        <table>
-                            <tr>
-                              <td></td>
-                              <td><b>Terceiro Quadrimestre</b></td>
-                            </tr>
-                            <tr>
-                              <td>Meta Planejada</td>
-                              <td><input type="text" name="" class="form-control" placeholder=""></td>
-                            </tr>
-                            <tr>
-                              <td>Meta Executada</td>
-                              <td><input type="text" name="" class="form-control" placeholder=""></td>
-                            </tr>
-                        </table>
-                      </div>
-                      <div class="col-md-12">
-                        <div class="form-group" style="margin-top: 10px">
-                          <label>Justificativa das Metas não Executadas</label>
-                          <textarea class="form-control" rows="5" name=""></textarea>
-                        </div>
-                      </div>
-                      <div class="col-md-12">
-                        <div class="form-group" style="margin-top: 10px">
-                          <label>Meta Extra Programada</label>
-                          <textarea class="form-control" rows="5" name=""></textarea>
-                        </div>
-                      </div>
-                    </div>
+                <div class="col-md-12">
+                  <div class="form-group" style="margin-top: 10px">
+                    <label>Meta Extra Programada</label>
+                    <textarea class="form-control" rows="5" name="metas_extras"></textarea>
                   </div>
                 </div>
-                <br>
-                <a class="btn btn-success" role="button" data-toggle="collapse" href="#collapse3" aria-expanded="false" aria-controls="collapseExample">
-                  Iniciativa 3
-                </a>
-                <br> <br>
-                <div class="collapse" id="collapse3">
-                  <div class="col-md-12">
-                    <div class="form-group" style="margin-top: 10px">
-                      <label>Descrição</label>
-                      <textarea class="form-control" rows="5" name=""></textarea>
-                    </div>
-                  </div>
-                  <div style="border: 1px solid black; padding: 15px;">
-                    <div class="row">
-                      <div class="col-md-4">
-                        <table>
-                          <tr>
-                            <td></td>
-                            <td><b>Primeiro Quadrimestre</b></td>
-                          </tr>
-                          <tr>
-                            <td>Meta Planejada</td>
-                            <td><input type="text" name="" class="form-control" placeholder=""></td>
-                          </tr>
-                          <tr>
-                            <td>Meta Executada</td>
-                            <td><input type="text" name="" class="form-control" placeholder=""></td>
-                          </tr>
-                        </table>
-                      </div>
-                      <div class="col-md-4">
-                      <table>
-                          <tr>
-                            <td></td>
-                            <td><b>Segundo Quadrimestre</b></td>
-                          </tr>
-                          <tr>
-                            <td>Meta Planejada</td>
-                            <td><input type="text" name="" class="form-control" placeholder=""></td>
-                          </tr>
-                          <tr>
-                            <td>Meta Executada</td>
-                            <td><input type="text" name="" class="form-control" placeholder=""></td>
-                          </tr>
-                        </table>
-                      </div>
-                      <div class="col-md-4">
-                        <table>
-                            <tr>
-                              <td></td>
-                              <td><b>Terceiro Quadrimestre</b></td>
-                            </tr>
-                            <tr>
-                              <td>Meta Planejada</td>
-                              <td><input type="text" name="" class="form-control" placeholder=""></td>
-                            </tr>
-                            <tr>
-                              <td>Meta Executada</td>
-                              <td><input type="text" name="" class="form-control" placeholder=""></td>
-                            </tr>
-                          </table>
-                      </div>
-                      <div class="col-md-12">
-                        <div class="form-group" style="margin-top: 10px">
-                          <label>Justificativa das Metas não Executadas</label>
-                          <textarea class="form-control" rows="5" name=""></textarea>
-                        </div>
-                      </div>
-                      <div class="col-md-12">
-                        <div class="form-group" style="margin-top: 10px">
-                          <label>Meta Extra Programada</label>
-                          <textarea class="form-control" rows="5" name=""></textarea>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </form>
               <div class="box-footer" style="margin: 0 auto; width: 150px">
-                <button type="submit" class="btn btn-default" style="margin-left: 15px">Cadastrar</button>
+                <button type="submit" class="btn btn-success" style="margin-left: 15px">Cadastrar</button>
               </div>
             </div>
 <!-- text input -->

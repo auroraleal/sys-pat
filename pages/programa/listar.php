@@ -3,7 +3,7 @@ session_start();
 include '../../utils/bd.php';
 include '../../utils/valida_login.php';
 
-$stmt = $conn->prepare("SELECT p.id, p.nome FROM programa p ;");
+$stmt = $conn->prepare("SELECT p.id, p.nome FROM programa p;");
 $stmt->execute();
 
 ?>

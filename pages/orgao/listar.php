@@ -94,7 +94,7 @@ $stmt->execute();
                       echo '<tr>';
                         echo "<td align='center'>" . $row['nome'] . '</td>';
                         echo "<td align='center'>" . $row['unidade_orcamentaria'] . '</td>';
-                        echo "<td align='center'>" . "<a href='../../controllers/orgao/excluir.php?id=$id' title='Programas' class='btn btn-success'><i class='fa fa-archive'></i></a>";
+                        echo "<td align='center'>" . "<a href='#' title='Programas' class='btn btn-success'><i class='fa fa-archive'></i></a>";
                         echo "&nbsp&nbsp". "<a href='../../controllers/orgao/excluir.php?id=$id' class='btn btn-danger'><i class='fa fa-trash'></i></a>";
                         echo "&nbsp&nbsp". "<a href='editar.php?id=$id' class='btn btn-default'><i class='fa fa-edit'></i></a>"  . '</td>';
                       echo '</tr>';
