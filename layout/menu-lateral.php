@@ -64,8 +64,8 @@
               <i class="fa fa-angle-left pull-right"></i>
             </span>
             <ul class="treeview-menu">
-              <li><a href="/sys-pat/pages/recurso/novo_tipo.php"><i class="fa  fa-pencil"></i>Cadastrar SubFunção</a></li>
-              <li><a href="/sys-pat/pages/recurso/listar.php"><i class="fa fa-list"></i>Listar SubFunções</a></li>
+              <li><a href="/sys-pat/pages/recurso/novo_tipo.php"><i class="fa  fa-pencil"></i>Cadastrar Fonte</a></li>
+              <li><a href="/sys-pat/pages/recurso/listar.php"><i class="fa fa-list"></i>Listar Fontes</a></li>
             </ul>
 
             <a href="#">

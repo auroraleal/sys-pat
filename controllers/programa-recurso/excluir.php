@@ -1,25 +1,26 @@
 <?php
 session_start();
 include '../../utils/bd.php';
-include '../../utils/valida_login.php';
 
-$stmt = $conn->prepare("INSERT INTO fonte_recurso (nome, valor) 
-values(:nome, :valor)");
+$programa_id = $_GET['programa'];
+$fonte_recurso_id = $_GET['fonte-recurso'];
 
-$valor = str_replace(',','.', str_replace('.','', $_POST['valor']));
+$stmt = $conn->prepare("DELETE FROM programa_has_fonte_recurso 
+						WHERE programa_id = :programa_id
+						AND   fonte_recurso_id = :fonte_recurso_id");
 
-$stmt->bindParam(':nome', $_POST['nome']);
-$stmt->bindParam(':valor', $valor);
+$stmt->bindParam(':programa_id', $programa_id);
+$stmt->bindParam(':fonte_recurso_id', $fonte_recurso_id);
 
 try
 {
 	$stmt->execute();
-	$_SESSION['msg'] = "Nova fonte de recurso cadastrada com sucesso";
-/*
-	$usuario_id = $_SESSION['id'];
+	$_SESSION['msg'] = "Alocação de Recurso para o Programa excluída com sucesso";
+
+	/*$usuario_id = $_SESSION['id'];
 	$operpat = 'EDITAR';
 	$registro = json_encode($_POST);
-	$tipo_registro = 'TIPO CONVENIO';
+	$tipo_registro = 'PROGRAMA';
 	$data_operpat = date("Y-m-d H:i:s");
 
 	$stmt = $conn->prepare("INSERT INTO log(usuario_id, operpat, registro, tipo_registro, data_operpat) 
@@ -33,7 +34,7 @@ try
 
 	$stmt->execute();*/
 
-	header("Location: ../../pages/recurso/listar.php");
+	header("Location: ../../pages/programa-recurso/listar.php?programa=$programa_id");
 }
 catch(PDOException $e)
 {

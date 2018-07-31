@@ -3,7 +3,24 @@ session_start();
 include '../../utils/bd.php';
 include '../../utils/valida_login.php';
 
-$stmt = $conn->prepare("SELECT * FROM fonte_recurso");
+$programa = $_GET['programa'];
+
+$stmt_programa = $conn->prepare("SELECT * FROM programa WHERE id = :id;");
+
+$stmt_programa->bindParam(':id', $programa);
+$stmt_programa->execute();
+
+$row_programa = $stmt_programa->fetch(PDO::FETCH_ASSOC);
+
+$stmt = $conn->prepare("SELECT f.id as fonte_recurso_id, f.nome AS fonte, 
+                          p.nome as programa, f.valor AS recurso_total,
+                          pf.valor AS recurso_alocado 
+                          FROM programa_has_fonte_recurso pf
+                          INNER JOIN programa p ON p.id = pf.programa_id
+                          INNER JOIN fonte_recurso f ON f.id = pf.fonte_recurso_id
+                          WHERE pf.programa_id = :programa;");
+
+$stmt->bindParam(':programa', $programa);
 $stmt->execute();
 
 ?>
@@ -68,20 +85,22 @@ $stmt->execute();
 
         </div>
         <div class="col-xs-12">
-          <a href="novo_tipo.php" class="btn btn-success" style="margin-bottom: 20px; margin-top: 20px"><i class= "fa fa-plus-square"></i> </a>
+          <a href="novo.php?programa=<?=$programa?>" class="btn btn-success" style="margin-bottom: 20px; margin-top: 20px"><i class= "fa fa-plus-square"></i> </a>
         </div>
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title"><b>Fontes de Recurso</b></h3>
+              <h3 class="box-title"><b>Listagem - Alocação de Recursos</b></h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+              <h4 class="box-title"><b>Programa: <?php echo $row_programa['nome']?></b></h4>
               <table id="tabela" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th style="text-align: center">Nome</th>
-                  <th style="text-align: center">Valor Total</th>
+                  <th style="text-align: center">Fonte</th>
+                  <th style="text-align: center">Recurso Total</th>
+                  <th style="text-align: center">Recurso Alocado</th>
                   <th style="text-align: center">Opções</th>
                 </tr>
                 </thead>
@@ -90,12 +109,13 @@ $stmt->execute();
                   
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
                     {
-                      $id = $row['id'];
+                      $fonte_recurso_id = $row['fonte_recurso_id'];
                       echo '<tr>';
-                        echo "<td align='center'>" . $row['nome'] . '</td>';
-                        echo "<td align='center'>" . $row['valor'] . '</td>';
-                        echo "<td align='center'>" . "<a href='../../controllers/recurso/excluir.php?id=$id' class='btn btn-danger'><i class='fa fa-trash'></i></a>";
-                        echo "&nbsp&nbsp". "<a href='editar.php?id=$id' class='btn btn-default'><i class='fa fa-edit'></i></a>"  . '</td>';
+                        echo "<td align='center'>" . $row['fonte'] . '</td>';
+                        echo "<td align='center'>" . $row['recurso_total'] . '</td>';
+                        echo "<td align='center'>" . $row['recurso_alocado'] . '</td>';
+                        echo "<td align='center'>" . "<a href='../../controllers/programa-recurso/excluir.php?programa=$programa&fonte-recurso=$fonte_recurso_id' class='btn btn-danger'><i class='fa fa-trash'></i></a>";
+                        echo "&nbsp&nbsp". "<a href='editar.php?programa=$programa&fonte-recurso=$fonte_recurso_id' class='btn btn-default'><i class='fa fa-edit'></i></a>";
                       echo '</tr>';
                     }
                   ?>

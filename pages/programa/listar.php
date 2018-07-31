@@ -3,7 +3,7 @@ session_start();
 include '../../utils/bd.php';
 include '../../utils/valida_login.php';
 
-$stmt = $conn->prepare("SELECT p.id, p.nome, p.fonte, p.valor FROM programa p ;");
+$stmt = $conn->prepare("SELECT p.id, p.nome FROM programa p ;");
 $stmt->execute();
 
 ?>
@@ -81,8 +81,6 @@ $stmt->execute();
                 <thead>
                 <tr>
                   <th style="text-align: center">Nome</th>
-                  <th style="text-align: center">Fonte</th>
-                  <th style="text-align: center">Valor</th>
                   <th style="text-align: center">Opções</th>
                 </tr>
                 </thead>
@@ -94,10 +92,9 @@ $stmt->execute();
                       $id = $row['id'];
                       echo '<tr>';
                         echo "<td align='center'>" . $row['nome'] . '</td>';
-                        echo "<td align='center'>" . $row['fonte'] . '</td>';
-                        echo "<td align='center'>" . $row['valor'] . '</td>';
                         echo "<td align='center'>" . "<a href='../../controllers/programa/excluir.php?id=$id' class='btn btn-danger'><i class='fa fa-trash'></i></a>";
-                        echo "&nbsp&nbsp". "<a href='editar.php?id=$id' class='btn btn-default'><i class='fa fa-edit'></i></a>"  . '</td>';
+                        echo "&nbsp&nbsp". "<a href='editar.php?id=$id' class='btn btn-default'><i class='fa fa-edit'></i></a>";
+                        echo "&nbsp&nbsp". "<a href='../programa-recurso/listar.php?programa=$id' title='Alocar Recursos' class='btn btn-success'><i class='fa fa-usd'></i></a>"  . '</td>';
                       echo '</tr>';
                     }
                   ?>

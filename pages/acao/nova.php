@@ -153,8 +153,13 @@ include '../../utils/valida_login.php';
                 <div class="col-md-3 col-md-offset-2">
                     <div class="form-group">
                         <label>Programa</label>
-                        <select class="form-control" name="programa">
+                        <select class="form-control" id="programa" name="programa">
                             <option value="">Selecione</option>
+                            <?php
+                                foreach($conn->query('SELECT * FROM programa') as $row) {
+                                    echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
+                                }       
+                            ?>
                         </select> 
                     </div>
                 </div>
@@ -163,15 +168,8 @@ include '../../utils/valida_login.php';
                     <table>
                         <tr>
                             <td><b>Fonte do Recurso</b></td>
-                            <td><b>Recurso Disponível</b></td>
-                        </tr>
-                        <tr>
-                            <td>Tesouro</td>
-                            <td>R$ 1.234,21</td>
-                        </tr>
-                        <tr>
-                            <td>ETC</td>
-                            <td>R$ 45.654,62</td>
+                            <td><b>Recurso Total</b></td>
+                            <td><b>Recurso Alocado</b></td>
                         </tr>
                     </table>
                 </div>
@@ -229,6 +227,15 @@ include '../../utils/valida_login.php';
     $.get('../../controllers/orgao/lista-unidade-orcamentaria.php?find=' + valor, function(data) {
         $('#unidade_orc').val('');
         $('#unidade_orc').val(data);
+    });
+  });
+
+  $(programa).change(function () {
+    var valor = $('#programa').find(":selected").val();
+    
+    $.get('../../controllers/programa-recurso/lista-recursos-programa.php?find=' + valor, function(data) {
+        $('#fonte_recurso').empty();
+        $('#fonte_recurso').append(data);
     });
   });
 </script>

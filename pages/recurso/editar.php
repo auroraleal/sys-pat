@@ -4,7 +4,7 @@ include '../../utils/bd.php';
 include '../../utils/valida_login.php'; 
 
 $id = $_GET['id'];
-$stmt = $conn->prepare("SELECT * FROM programa WHERE id = $id");
+$stmt = $conn->prepare("SELECT * FROM fonte_recurso WHERE id = $id");
 
 try
 {
@@ -76,19 +76,25 @@ catch(PDOException $e)
             
    			<div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">Editar Programa</h3>
+              <h3 class="box-title">Editar Fonte de Recurso</h3>
             </div>
             <!-- /.box-header -->
             <form role="form" action="../../controllers/programa/editar.php" method="post">
               <input type="hidden" name="id" value="<?=$id?>"/>
             <div class="box-body">
               
-            <div class="col-md-6">
+            <div class="col-md-4">
               <div class="form-group">
                       <label>Nome</label>
                       <input type="text" name= "nome" value="<?=$results['nome']?>" class="form-control" placeholder="Digite o nome">
                   </div>
             </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Valor Total</label>
+                    <input type="text" name= "valor" value="<?=$results['valor']?>" class="form-control money" placeholder="">
+                  </div>
+              </div>
 
 </div>
             <div class="box-footer">

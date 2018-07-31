@@ -73,28 +73,6 @@ include '../../utils/valida_login.php';
                       <input type="text" name= "nome" class="form-control" placeholder="Digite o nome">
                   </div>
             </div>
-
-            <div class="col-md-3">
-              <div class="">
-                      <label>Fonte de Recurso</label>
-                      <select class="form-control" name="fonte">
-		                    <option value="">Selecione</option>
-                        <option value="Tesouro">Tesouro</option>
-                        <option value="Tesouro">RPPS</option>
-      
-		                  </select>
-                	</div>
-                  </div>
-
-                  <div class="col-md-2">
-              <div class="form-group">
-                      <label>Valor do Recurso</label>
-                      <input type="text" name= "valor" class="form-control" placeholder="Digite o valor">
-                  </div>
-            </div>
-
-
-
 </div>
             <div class="box-footer">
               <button type="submit" class="btn btn-success" style="margin-left: 15px">Cadastrar</button>

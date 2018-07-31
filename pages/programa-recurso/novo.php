@@ -2,6 +2,15 @@
 session_start();
 include '../../utils/bd.php';
 include '../../utils/valida_login.php'; 
+
+$programa = $_GET['programa'];
+
+$stmt = $conn->prepare("SELECT * FROM programa WHERE id = :id;");
+
+$stmt->bindParam(':id', $programa);
+$stmt->execute();
+
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -61,24 +70,40 @@ include '../../utils/valida_login.php';
             
    			<div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">Cadastrar Nova Fonte de Recurso</h3>
+              <h3 class="box-title">Alocação de Recursos</h3>
             </div>
             <!-- /.box-header -->
-            <form role="form" action="../../controllers/recurso/new_tipo.php" method="post">
+            <form role="form" action="../../controllers/programa-recurso/new_tipo.php" method="post">
             <div class="box-body">
-              <div class="col-md-4">
-                <div class="form-group">
-                    <label>Nome</label>
-                    <input type="text" name= "nome" class="form-control" placeholder="Digite o nome">
-                  </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                    <label>Valor Total</label>
-                    <input type="text" name= "valor" class="form-control money" placeholder="">
-                  </div>
+            <input type="hidden" name= "programa" value="<?=$programa?>">
+            <h4><b>Programa: <?php echo $row['nome']?></b></h4>
+            <br>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Fonte</label>
+                <select type="text" class="form-control" placeholder="" id="fonte" name="fonte">
+                  <option value=""> Selecione </option>
+                  <?php
+                      foreach($conn->query('SELECT id, nome FROM fonte_recurso') as $row) {
+                          echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
+                      }       
+                  ?>
+                </select>
               </div>
             </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                  <label>Valor Total</label>
+                  <input disabled type="text" id="valor_total" name= "valor_total" class="form-control money" placeholder="">
+                </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                  <label>Valor Alocado</label>
+                  <input type="text" name= "valor" class="form-control money" placeholder="">
+                </div>
+            </div>
+</div>
             <div class="box-footer">
               <button type="submit" class="btn btn-success" style="margin-left: 15px">Cadastrar</button>
             </div>
@@ -113,8 +138,16 @@ include '../../utils/valida_login.php';
 <script>
   $(document).ready(function () {
     $('.sidebar-menu').tree();
-    $('.date').mask('00/00/0000');
     $('.money').mask('000.000.000.000.000,00', {reverse: true});
+  });
+
+  $(fonte).change(function () {
+    var valor = $('#fonte').find(":selected").val();
+    
+    $.get('../../controllers/programa-recurso/lista-valor-total.php?find=' + valor, function(data) {
+        $('#valor_total').val('');
+        $('#valor_total').val(data);
+    });
   });
 </script>
 </body>

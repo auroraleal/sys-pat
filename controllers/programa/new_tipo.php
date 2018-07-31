@@ -3,13 +3,10 @@ session_start();
 include '../../utils/bd.php';
 include '../../utils/valida_login.php';
 
-
-$stmt = $conn->prepare("INSERT INTO programa(nome, fonte, valor) 
-values(:nome, :fonte, :valor)");
+$stmt = $conn->prepare("INSERT INTO programa(nome) 
+values(:nome)");
 
 $stmt->bindParam(':nome', $_POST['nome']);
-$stmt->bindParam(':fonte', $_POST['fonte']);
-$stmt->bindParam(':valor', $_POST['valor']);
 
 try
 {
@@ -17,7 +14,7 @@ try
 	$stmt->execute();
 	$_SESSION['msg'] = "Novo programa cadastrado com sucesso";
 
-
+	/*
 	$usuario_id = $_SESSION['id'];
 	$operpat = 'EDITAR';
 	$registro = json_encode($_POST);
@@ -33,7 +30,7 @@ try
 	$stmt->bindParam(':registro', $registro);
 	$stmt->bindParam(':tipo_registro', $tipo_registro);
 
-	$stmt->execute();
+	$stmt->execute();*/
 
 	header("Location: ../../pages/programa/listar.php");
 }
