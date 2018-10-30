@@ -99,14 +99,9 @@ $stmt->execute();
                       echo "<td align='center'>" . $row['nome'] .'</td>';
                       echo "<td align='center'>" . $row['ano'] . '</td>';
                   ?>
-                  <td align='center'><a onclick="return confirm('Deseja realmente excluir?');" href='../../controllers/acao/excluir.php?id=<?=$id?>' class='btn btn-danger'><i class='fa fa-trash'></i></a>
+                  <!--td align='center'><a onclick="return confirm('Deseja realmente excluir?');" href='../../controllers/acao/excluir.php?id=<//?=$id?>' class='btn btn-danger'><i class='fa fa-trash'></i></a-->
                   <?php     
-                        //echo "&nbsp&nbsp" . "<a href='editar.php?id=$id' class='btn btn-default'><i class='fa fa-edit'></i></a>" . '&nbsp&nbsp';
-                        echo "&nbsp&nbsp" . "<a href='#' class='btn btn-default'><i class='fa fa-edit'></i></a>" . '&nbsp&nbsp';
-                        echo "<a href='#' class='btn btn-info'><i class='fa fa-eye'></i></a>";
-                      //echo "<a href='visualizar.php?id=$id' class='btn btn-info'><i class='fa fa-eye'></i></a>";
-                      //echo "&nbsp&nbsp" . "<a href='/sys-pat/pages/iniciativa/nova.php?id=$id&nome=$nome' title='Iniciativas' class='btn btn-default'><i class='fa fa-folder-o'></i></a>";
-                      echo "&nbsp&nbsp" . "<a href='/sys-pat/pages/iniciativa/nova.php?id=$id' title='Iniciativas' class='btn btn-success'><i class='fa fa-folder-o'></i></a>";
+                     echo "&nbsp&nbsp" . "<td align='center'><a href='/sys-pat/pages/iniciativa/nova.php?id=$id' title='Iniciativas' class='btn btn-success'><i class='fa fa-folder-o'></i></a>";
                       echo '</td>';
                       echo '</tr>';
                     }

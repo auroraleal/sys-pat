@@ -39,20 +39,7 @@ for ($i = 1; $i <= 3; $i++) {
 	
 	$stmt_dotacao_orcamentaria = $conn->prepare($query_dotacao);
 
-	$quadrimestre = '';
-	switch ($i) {
-		case 1:
-			$quadrimestre = "Primeiro";
-			break;
-		case 2:
-			$quadrimestre = "Segundo";
-			break;
-		case 3:
-			$quadrimestre = "Terceiro";
-			break;
-	}
-
-	$stmt_dotacao_orcamentaria->bindParam(':quadrimestre', $quadrimestre);
+	$stmt_dotacao_orcamentaria->bindParam(':quadrimestre', $i);
 	$stmt_dotacao_orcamentaria->bindParam(':valor_inicial', $valor_inicial);
 	$stmt_dotacao_orcamentaria->bindParam(':valor_atual', $valor_atual);
 	$stmt_dotacao_orcamentaria->bindParam(':acao_id', $acao_id);

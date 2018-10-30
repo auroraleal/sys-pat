@@ -107,7 +107,8 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
                   $quad = 1;
                   for ($i = 0; $i <= 2; $i++) {
-                      $dotacao = $row_dotacao[$i];
+                      if ($stmt_dotacao->rowCount() > 0)
+                        $dotacao = $row_dotacao[$i];
 
                           $html_dotacao .=
                           "
@@ -119,35 +120,40 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                               </tr>
                               <tr>
                                   <td>Inicial</td> ";
-                              if ($dotacao['quadrimestre'] == $quad) {
-                                  $valor_inicial = $dotacao['valor_inicial'];
-                                  $html_dotacao .=
-                                  "
-                                  <td><input type='text' name='quad_".$quad."_inicial' class='form-control money' placeholder='' value='$valor_inicial'></td>
-                                  ";
+                              
+                              if (isset($dotacao)) {
+                                if ($dotacao['quadrimestre'] == $quad) {
+                                    $valor_inicial = $dotacao['valor_inicial'];
+                                    $html_dotacao .=
+                                    "
+                                    <td><input type='text' name='quad_".$quad."_inicial' class='form-control money' placeholder='' value='$valor_inicial'></td>
+                                    ";
+                                }
                               } else {
-                                  $html_dotacao .=
-                                  "
-                                  <td><input type='text' name='quad_".$quad."_inicial' class='form-control money' placeholder='' value='0'></td>
-                                  ";
+                                $html_dotacao .=
+                                "
+                                <td><input type='text' name='quad_".$quad."_inicial' class='form-control money' placeholder='' value='0'></td>
+                                ";
                               }
                               $html_dotacao .= 
                               "
                               </tr>
                               <tr>
-                                  <td>Atual</td>";
+                                <td>Atual</td>";
+                                if (isset($dotacao)) {
                                   if ($dotacao['quadrimestre'] == $quad) {
                                       $valor_atual = $dotacao['valor_atual'];
                                       $html_dotacao .=
                                       "
                                       <td><input type='text' name='quad_".$quad."_atual' class='form-control money' placeholder='' value='$valor_atual'></td>
                                       ";
-                                  } else {
-                                      $html_dotacao .=
-                                      "
-                                      <td><input type='text' name='quad_".$quad."_atual' class='form-control money' placeholder='' value='0'></td>
-                                      ";
                                   }
+                                } else {
+                                  $html_dotacao .=
+                                  "
+                                  <td><input type='text' name='quad_".$quad."_atual' class='form-control money' placeholder='' value='0'></td>
+                                  ";
+                                }
                               $html_dotacao .=
                               "
                               </tr>
@@ -300,13 +306,13 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 <div class="col-md-12">
                   <div class="form-group" style="margin-top: 10px">
                     <label>Justificativa das Metas não Executadas</label>
-                    <textarea class="form-control" rows="5" name="justificativa_metas_n_exec"><?php echo $justificativa ?></textarea>
+                    <textarea class="form-control" rows="5" name="justificativa_metas_n_exec"><?php if (isset($justificativa)) echo $justificativa ?></textarea>
                   </div>
                 </div>
                 <div class="col-md-12">
                   <div class="form-group" style="margin-top: 10px">
                     <label>Meta Extra Programada</label>
-                    <textarea class="form-control" rows="5" name="metas_extras"><?php echo $metas ?></textarea>
+                    <textarea class="form-control" rows="5" name="metas_extras"><?php if (isset($metas)) echo $metas ?></textarea>
                   </div>
                 </div>
               <div class="box-footer" style="margin: 0 auto; width: 150px">

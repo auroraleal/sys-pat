@@ -151,9 +151,9 @@ if (isset($_POST['pesquisar'])) {
                               <label>Quadrimestre</label>
                               <select class="form-control" name="quadrimestre">
                                 <option value="">Selecione</option>
-                                <option value="Primeiro">Primeiro</option>
-                                <option value="Segundo">Segundo</option>
-                                <option value="Terceiro">Terceiro</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
                               </select>
                             </div>
                           </div>
@@ -167,7 +167,7 @@ if (isset($_POST['pesquisar'])) {
                         <div class="row">
                         <div class="col-md-offset-4 col-md-2">
                             <div class="form-group">
-                              <label>Órgão</label>
+                              <label>Órgão <span style="color:red"> *</span></label>
                               <select class="form-control" name="orgao">
                                 <option value="">Selecione</option>
                                 <?php

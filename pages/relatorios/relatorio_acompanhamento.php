@@ -15,12 +15,8 @@ $orgao_id = $_POST['orgao'];
 $query = "SELECT o.nome AS orgao, p.nome AS programa, 
             a.nome AS acao, a.objetivo AS acao_objetivo, 
             p.nome, f.nome AS fonte, f.valor AS recurso_total, 
-            pf.valor AS recurso_alocado, i.id as iniciativa_id, 
-            i.descricao as iniciativa_descricao,
-            i.justificativa_nao_executadas, i.metas_extras
-          FROM iniciativa i
-            INNER JOIN acao a
-                ON i.acao_id = a.id
+            pf.valor AS recurso_alocado, a.id as acao_id
+        FROM acao a
             INNER JOIN programa p
                 ON a.programa_id = p.id
             INNER JOIN programa_has_orgao po
@@ -30,19 +26,35 @@ $query = "SELECT o.nome AS orgao, p.nome AS programa,
             INNER JOIN programa_has_fonte_recurso pf
                 ON p.id = pf.programa_id
             INNER JOIN fonte_recurso f 
-                ON f.id = pf.fonte_recurso_id";
+                ON f.id = pf.fonte_recurso_id
+            WHERE o.id = :orgao_id";
+            
+if (!empty($_POST['programa'])) {
+    $query .= " AND p.id = " . $_POST['programa'];
+}
+if (!empty($_POST['programa'])) {
+    $query .= " AND a.ano = " . $_POST['ano'];
+}
 
-$query_metas = "SELECT i.descricao, m.quadrimestre, 
-            m.percentual_planejado, m.percentual_executado
-          FROM metas m
-            INNER JOIN iniciativa i
-            ON i.id = m.iniciativa_id
-          WHERE i.id = :iniciativa_id";
+$query_iniciativa = "SELECT i.id as iniciativa_id, 
+                        i.descricao as iniciativa_descricao
+                     FROM iniciativa i
+                        WHERE i.acao_id = :acao_id";
+
+$query_iniciativa_detalhe = "SELECT DISTINCT i.justificativa_nao_executadas, i.metas_extras
+                                FROM iniciativa i
+                             WHERE i.acao_id = :acao_id";
+
+$query_metas = "SELECT m.quadrimestre, m.percentual_planejado, m.percentual_executado
+                    FROM metas m
+                WHERE m.iniciativa_id = :iniciativa_id";
+if (!empty($_POST['quadrimestre'])) {
+    $query_metas .= " AND m.quadrimestre = " .  $_POST['quadrimestre'];
+}
 
 $stmt = $conn->prepare($query);
-//$stmt->bindParam(':orgao_id', $orgao_id);
+$stmt->bindParam(':orgao_id', $orgao_id);
 $stmt->execute();
-
 
 /* Cria a instância */
 $dompdf = new Dompdf();
@@ -80,7 +92,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 <p> RELATÓRIO DE ACOMPANHAMENTO DE EXECUÇÃO DO PPA ___-___ - PMM</p>
                 <span>Exercício: " . $_POST['ano'] . "</span> &nbsp; &nbsp; &nbsp; <span>Quadrimestre: " . $_POST['quadrimestre'] . "</span>
             </div>
-            <div style='margin-top: 15px; margin-left: 15px'>
+            <div style='margin-top: 15px;'>
                 <p>1 - <b>Órgão: </b>" . $row['orgao'] . "</p>
                 <p>2 - <b>Programa: </b>" . $row['programa'] . "</p>
                 <p>3 - <b>Ação: </b>" . $row['acao'] . "</p>
@@ -93,45 +105,69 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     </div>    
                 </div>
                 <div style='margin-top: -20px'>
-                    <p>4 - <b>Iniciativas/Metas Planejadas</b></p>
-                    <div style='margin-top: -15px; margin-left: 20px'>
-                        <p>4.1 - <b>Descrição: </b>" . $row['iniciativa_descricao'] . "</p>
-                    </div>
-                    <table>
-                        <tr>
-                            <td><b>Quadrimestre</b></td>
-                            <td><b>Meta Planejada (%)</b></td>
-                            <td><b>Meta Executada (%)</b></td>
-                        </tr>";
+                        <p>4 - <b>Iniciativas</b></p>";
 
-                $stmt_metas = $conn->prepare($query_metas);
-                $stmt_metas->bindParam(':iniciativa_id', $row['iniciativa_id']);
-                $stmt_metas->execute();
-
-                while ($row_metas = $stmt_metas->fetch(PDO::FETCH_ASSOC)) {
-                    $html .= "
-                            <tr>
-                            <td>" . $row_metas['quadrimestre'] . "</td>
-                            <td>" . $row_metas['percentual_planejado'] . "</td>
-                            <td>" . $row_metas['percentual_executado'] . "</td>
-                        </tr>";
+                $stmt_iniciativa = $conn->prepare($query_iniciativa);
+                if (!empty($_POST['acao'])) {
+                    $stmt_iniciativa->bindParam(':acao_id', $_POST['acao']);
+                } else {
+                    $stmt_iniciativa->bindParam(':acao_id', $row['acao_id']);
                 }
 
+                $stmt_iniciativa->execute();
+
+                while ($row_iniciativa = $stmt_iniciativa->fetch(PDO::FETCH_ASSOC)) {
+                    $html .= "
+                        <div style='margin-top: -15px;'>
+                            <p><b>Descrição: </b>" . $row_iniciativa['iniciativa_descricao'] . "</p>
+                        </div>
+                        <table>
+                            <tr>
+                                <td><b>Quadrimestre</b></td>
+                                <td><b>Meta Planejada (%)</b></td>
+                                <td><b>Meta Executada (%)</b></td>
+                            </tr>";
+
+                    $stmt_metas = $conn->prepare($query_metas);
+                    $stmt_metas->bindParam(':iniciativa_id', $row_iniciativa['iniciativa_id']);
+                    $stmt_metas->execute();
+
+                    while ($row_metas = $stmt_metas->fetch(PDO::FETCH_ASSOC)) {
+                        $html .= "
+                                <tr>
+                                    <td>" . $row_metas['quadrimestre'] . "</td>
+                                    <td>" . $row_metas['percentual_planejado'] . "</td>
+                                    <td>" . $row_metas['percentual_executado'] . "</td>
+                                </tr>";
+                    }
                 $html .= "</table>
-                    </div>
+                </div>";
+            }
+
+            $stmt_iniciativa_detalhe = $conn->prepare($query_iniciativa_detalhe);
+            if (!empty($_POST['acao'])) {
+                $stmt_iniciativa_detalhe->bindParam(':acao_id', $_POST['acao']);
+            } else {
+                $stmt_iniciativa_detalhe->bindParam(':acao_id', $row['acao_id']);
+            }
+            $stmt_iniciativa_detalhe->execute();
+
+            while ($row_iniciativa_detalhe = $stmt_iniciativa_detalhe->fetch(PDO::FETCH_ASSOC)) {
+                $html .= "
                 <div>
                     <p>5 - <b>Justificativa das Metas não Executadas: </b>
                     <div style='margin-top: -15px; margin-left: 20px'>
-                        <p> ". $row['justificativa_nao_executadas'] . "</p>
+                        <p> ". $row_iniciativa_detalhe['justificativa_nao_executadas'] . "</p>
                     </div>
                 </div>
                 <div>
                     <p>6 - <b>Meta Extra Planejada: </b>
                     <div style='margin-top: -15px; margin-left: 20px'>
-                            <p> ". $row['metas_extras'] . "</p>
+                            <p> ". $row_iniciativa_detalhe['metas_extras'] . "</p>
                     </div>
                 </div>";
-
+            }
+            
             // ACRESCENTA UMA QUEBRA DE PÁGINA APENAS
             // SE ATÉ A PENULTIMA PÁGINA
             if ($i != ($stmt->rowCount() - 1))

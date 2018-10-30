@@ -30,7 +30,7 @@ try
 
 	$stmt->execute();*/
 
-	header("Location: ../../pages/orgao/listar.php");
+	header("Location: ../../pages/orgao-programa/novo.php?id=$orgao_id");
 }
 catch(PDOException $e)
 {
