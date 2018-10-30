@@ -67,7 +67,7 @@ include '../../utils/valida_login.php';
             <form role="form" action="../../controllers/programa/new_tipo.php" method="post">
             <div class="box-body">
               
-            <div class="col-md-4">
+            <div class="col-md-12">
               <div class="form-group">
                       <label>Nome</label>
                       <input type="text" name= "nome" class="form-control" placeholder="Digite o nome">

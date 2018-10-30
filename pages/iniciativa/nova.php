@@ -5,11 +5,15 @@ include '../../utils/valida_login.php';
 
 $acao_id = $_GET['id'];
 
+// INFORMAÇÕES DA AÇÃO
 $stmt = $conn->prepare("SELECT a.quantidade_iniciativas, a.nome as acao, p.nome as programa FROM acao a 
                           INNER JOIN programa p ON a.programa_id = p.id
-                        WHERE a.id = $acao_id;");
+                        WHERE a.id = :acao_id;");
+$stmt->bindParam(':acao_id', $acao_id);
+
 $stmt->execute();
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -77,70 +81,114 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <form role="form" action="../../controllers/iniciativa/new-iniciativa.php" method="post">
+              <form role="form" action="../../controllers/iniciativa/new.php" method="post">
                 <input type="hidden" name="acao_id" value="<?=$acao_id?>"/>
                 <input type="hidden" name="quantidade_iniciativas" value="<?=$row['quantidade_iniciativas']?>"/>
                 <h4>Acão: <b><?php echo $row['acao']?></b></h4>
                 <h4>Programa: <b><?php echo $row['programa']?></b></h4>
-                <div style="border: 1px solid black; padding: 15px;">
-                  <div class="row">
-                    <h5 align="center" style="margin: 0 auto"><b>Dotação Orçamentária</b><h5>
-                    <hr style="border: 0.5px solid black;">
-                    <div class="col-md-4">
-                      <table>
-                        <tr>
-                          <td></td>
-                          <td align="center"><b>Quadrimestre 1</b></td>
-                        </tr>
-                        <tr>
-                          <td>Inicial</td>
-                          <td><input type="text" name="quad_1_inicial" class="form-control" placeholder=""></td>
-                        </tr>
-                        <tr>
-                          <td>Atual</td>
-                          <td><input type="text" name="quad_1_atual" class="form-control" placeholder=""></td>
-                        </tr>
-                      </table>
-                    </div>
-                    <div class="col-md-4">
-                      <table>
-                        <tr>
-                          <td></td>
-                          <td align="center"><b>Quadrimestre 2</b></td>
-                        </tr>
-                        <tr>
-                          <td>Inicial</td>
-                          <td><input type="text" name="quad_2_inicial" class="form-control" placeholder=""></td>
-                        </tr>
-                        <tr>
-                          <td>Atual</td>
-                          <td><input type="text" name="quad_2_atual" class="form-control" placeholder=""></td>
-                        </tr>
-                      </table>
-                    </div>
-                    <div class="col-md-4">
-                      <table>
-                        <tr>
-                          <td></td>
-                          <td align="center"><b>Quadrimestre 3</b></td>
-                        </tr>
-                        <tr>
-                          <td>Inicial</td>
-                          <td><input type="text" name="quad_3_inicial" class="form-control" placeholder=""></td>
-                        </tr>
-                        <tr>
-                          <td>Atual</td>
-                          <td><input type="text" name="quad_3_atual" class="form-control" placeholder=""></td>
-                        </tr>
-                      </table>
-                    </div>
+ 
+                <!-- DOTAÇÃO -->
+                <?php
+                  // VERIFICA SE JÁ EXISTE DOTAÇÃO CADASTRADA PARA A AÇÃO
+                  $stmt_dotacao = $conn->prepare("SELECT * FROM dotacao_orcamentaria 
+                                                  WHERE acao_id = :acao_id
+                                                  ORDER BY quadrimestre ASC;");
+                  $stmt_dotacao->bindParam(':acao_id', $acao_id);
+                  $stmt_dotacao->execute();
+                  $row_dotacao = $stmt_dotacao->fetchAll(PDO::FETCH_ASSOC);
+
+                  $html_dotacao = 
+                  "
+                  <div style='border: 1px solid black; padding: 15px;'>
+                      <div class='row'>
+                          <h5 align='center' style='margin: 0 auto'><b>Dotação Orçamentária</b><h5>
+                          <hr style='border: 0.5px solid black;'>
+                  ";
+
+                  $quad = 1;
+                  for ($i = 0; $i <= 2; $i++) {
+                      $dotacao = $row_dotacao[$i];
+
+                          $html_dotacao .=
+                          "
+                          <div class='col-md-4'>
+                              <table>
+                              <tr>
+                                  <td></td>
+                                  <td align='center'><b>Quadrimestre " . $quad . "</b></td>
+                              </tr>
+                              <tr>
+                                  <td>Inicial</td> ";
+                              if ($dotacao['quadrimestre'] == $quad) {
+                                  $valor_inicial = $dotacao['valor_inicial'];
+                                  $html_dotacao .=
+                                  "
+                                  <td><input type='text' name='quad_".$quad."_inicial' class='form-control money' placeholder='' value='$valor_inicial'></td>
+                                  ";
+                              } else {
+                                  $html_dotacao .=
+                                  "
+                                  <td><input type='text' name='quad_".$quad."_inicial' class='form-control money' placeholder='' value='0'></td>
+                                  ";
+                              }
+                              $html_dotacao .= 
+                              "
+                              </tr>
+                              <tr>
+                                  <td>Atual</td>";
+                                  if ($dotacao['quadrimestre'] == $quad) {
+                                      $valor_atual = $dotacao['valor_atual'];
+                                      $html_dotacao .=
+                                      "
+                                      <td><input type='text' name='quad_".$quad."_atual' class='form-control money' placeholder='' value='$valor_atual'></td>
+                                      ";
+                                  } else {
+                                      $html_dotacao .=
+                                      "
+                                      <td><input type='text' name='quad_".$quad."_atual' class='form-control money' placeholder='' value='0'></td>
+                                      ";
+                                  }
+                              $html_dotacao .=
+                              "
+                              </tr>
+                              </table>
+                          </div>
+                          ";
+                          $quad++;
+                  }
+
+                  $html_dotacao .=
+                  "
+                      </div> <!-- fim row -->
                   </div>
-                </div>
+                  ";
+
+                  echo $html_dotacao;
+                ?>
                 <br>
                 <?php
-                  $iniciativas = "";
-                  for ($i = 1; $i <= $row['quantidade_iniciativas']; $i++) {
-                    $iniciativas .= 
+                  // VERIFICA SE JÁ EXISTEM INICIATIVAS CADASTRADAS PARA A AÇÃO
+                  $stmt_iniciativa = $conn->prepare("SELECT * FROM iniciativa WHERE acao_id = :acao_id;");
+                  $stmt_iniciativa->bindParam(':acao_id', $acao_id);
+
+                  $stmt_iniciativa->execute();
+                  $rs_iniciativas = $stmt_iniciativa->fetchAll(PDO::FETCH_ASSOC);
+                  $tem_iniciativas = !empty($rs_iniciativas);
+
+                  $quantidade_iniciativas = $row['quantidade_iniciativas'];
+                  
+                  $html_iniciativas = "";
+                  for ($i = 1; $i <= $quantidade_iniciativas; $i++) {
+                    if (count($rs_iniciativas) > 0) {
+                      $posicao = $i - 1;
+
+                      $iniciativa_id = $rs_iniciativas[$posicao]['id'];
+                      $descricao     = $rs_iniciativas[$posicao]['descricao'];    
+                      $justificativa = $rs_iniciativas[$posicao]['justificativa_nao_executadas'];
+                      $metas         = $rs_iniciativas[$posicao]['metas_extras'];
+                    }
+                    
+                    $html_iniciativas .= 
                       "
                       <a class='btn btn-success' role='button' data-toggle='collapse' href='#collapse$i' aria-expanded='false' aria-controls='collapseExample'>
                         Iniciativa " . $i .
@@ -149,14 +197,46 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                       <div class='collapse' id='collapse$i'>
                         <div class='col-md-12'>
                           <div class='form-group' style='margin-top: 10px'>
-                            <label>Descrição</label>
-                            <textarea class='form-control' rows='5' name='descricao_iniciativa$i'></textarea>
+                            <label>Descrição</label>";
+                            if ($tem_iniciativas) {
+                              $html_iniciativas .= "<textarea class='form-control' rows='5' name='descricao_iniciativa$i'>$descricao</textarea>";
+                            } else {
+                              $html_iniciativas .= "<textarea class='form-control' rows='5' name='descricao_iniciativa$i'></textarea>";
+                            }
+                            $html_iniciativas .= 
+                            "
                           </div>
                         </div>
                         <div style='border: 1px solid black; padding: 15px;'>
+                          <hr style='border: 0.5px solid black;'>
+                          <h5 align='center' style='margin: 0 auto'><b>Metas</b><h5>
+                          <hr style='border: 0.5px solid black;'>
                           <div class='row'>";
                               for ($y = 1; $y <= 3; $y++) {
-                                $iniciativas .= 
+                                // VERIFICA AS METAS DE CADA INICIATIVA CADASTRADAS PARA A AÇÃO
+                                $stmt_metas = $conn->prepare("SELECT * FROM metas WHERE iniciativa_id = :iniciativa_id;");
+                                $stmt_metas->bindParam(':iniciativa_id', $iniciativa_id);
+
+                                $stmt_metas->execute();
+                                $rs_metas = $stmt_metas->fetchAll(PDO::FETCH_ASSOC);
+                                $tem_metas = !empty($rs_metas);
+
+                                if ($tem_metas) {
+                                  $index_meta = $y - 1;
+                                  $meta_id = $rs_metas[$index_meta]['id'];
+                                  $meta_planejada = $rs_metas[$index_meta]['percentual_planejado'];
+                                  $meta_executada = $rs_metas[$index_meta]['percentual_executado'];
+                                  $html_iniciativas .= 
+                                  "
+                                    <input type='hidden' name='meta_id[]' 
+                                    value='$meta_id'>
+                                  ";
+                                }
+
+                                $index_meta_planejada = "quad_perc_plan$i$y";
+                                $index_meta_executada = "quad_perc_exec$i$y";
+
+                                $html_iniciativas .= 
                                 "<div class='col-md-4'>
                                   <table>
                                     <tr>
@@ -164,40 +244,73 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                                       <td align='center'><b>Quadrimestre $y</b></td>
                                     </tr>
                                     <tr>
-                                      <td>Percentual Planejado</td>
-                                      <td><input type='text' name='quad_perc_plan$i$y' class='form-control' placeholder=''></td>
-                                    </tr>
-                                    <tr>
-                                      <td>Percentual Executado</td>
-                                      <td><input type='text' name='quad_perc_exec$i$y' class='form-control' placeholder=''></td>
+                                      <td>Percentual Planejado</td>";
+
+                                      if ($tem_metas) {
+                                        $html_iniciativas .= 
+                                        "
+                                        <td>
+                                          <input type='text' name='$index_meta_planejada' 
+                                          class='form-control' placeholder='' value='$meta_planejada'>
+                                        </td>";
+                                      } else {
+                                        $html_iniciativas .= 
+                                        "
+                                        <td>
+                                          <input type='text' name='$index_meta_planejada' 
+                                          class='form-control' placeholder=''>
+                                        </td>";
+                                      }
+                                    $html_iniciativas .= 
+                                    "</tr>";
+                                      $html_iniciativas .= 
+                                      "
+                                      <tr>
+                                        <td>Percentual Executado</td>";
+
+                                        if ($tem_metas) {
+                                          $html_iniciativas .= 
+                                          "
+                                          <td>
+                                            <input type='text' name='$index_meta_executada' 
+                                            class='form-control' placeholder='' value='$meta_executada'>
+                                          </td>";
+                                        } else {
+                                          $html_iniciativas .= 
+                                          "<td>
+                                            <input type='text' name='$index_meta_executada' 
+                                            class='form-control' placeholder=''>
+                                          </td>";
+                                        }
+                                    $html_iniciativas .= 
+                                    "
                                     </tr>
                                   </table>
                                 </div>";
                               }
-                            $iniciativas .=   
+                            $html_iniciativas .=   
                             "</div>
                           </div>
                         </div>
                       <br>  
                       ";
                   }
-                  echo $iniciativas;
+                  echo $html_iniciativas;
                 ?>
-                
                 <div class="col-md-12">
                   <div class="form-group" style="margin-top: 10px">
                     <label>Justificativa das Metas não Executadas</label>
-                    <textarea class="form-control" rows="5" name="justificativa_metas_n_exec"></textarea>
+                    <textarea class="form-control" rows="5" name="justificativa_metas_n_exec"><?php echo $justificativa ?></textarea>
                   </div>
                 </div>
                 <div class="col-md-12">
                   <div class="form-group" style="margin-top: 10px">
                     <label>Meta Extra Programada</label>
-                    <textarea class="form-control" rows="5" name="metas_extras"></textarea>
+                    <textarea class="form-control" rows="5" name="metas_extras"><?php echo $metas ?></textarea>
                   </div>
                 </div>
               <div class="box-footer" style="margin: 0 auto; width: 150px">
-                <button type="submit" class="btn btn-success" style="margin-left: 15px">Cadastrar</button>
+                <button type="submit" class="btn btn-success" style="margin-left: 15px">Salvar</button>
               </div>
             </div>
 <!-- text input -->
@@ -221,8 +334,23 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
 <script src="../../dist/js/adminlte.min.js"></script>
 
 <script>
+  $.urlParam = function(name){
+    var results = new RegExp('[\?&]' + name + '=([^]*)').exec(window.location.href);
+    if (results==null){
+       return null;
+    }
+    else{
+       return results[1] || 0;
+    }
+  }
+
   $(document).ready(function () {
-    $('.date').mask('00/00/0000');
+    
+    /*$.get('../../controllers/programa-recurso/lista-recursos-programa.php?find=' + valor, function(data) {
+        $('#fonte_recurso').empty();
+        $('#fonte_recurso').append(data);
+    });*/
+
     $('.money').mask('000.000.000.000.000,00', {reverse: true});
   });
 </script>

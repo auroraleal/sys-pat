@@ -1,8 +1,10 @@
 <?php
 /* Carrega a classe DOMPdf */
-require_once '../utils/dompdf/autoload.inc.php';
+require_once '../../utils/dompdf/autoload.inc.php';
 
 use Dompdf\Dompdf;
+
+//die(var_dump($_POST));
 
 /* Cria a instância */
 $dompdf = new Dompdf();
@@ -24,7 +26,7 @@ $html =
     </head>
     <body>
         <div align='center'>
-            <img src='../imagens/brasao.png' height=100px width=100px></img>
+            <img src='../../imagens/brasao.png' height=100px width=100px></img>
         </div>
         <div style='margin-top: 15px' align='center'>
             <p class='cabecalho'>PREFEITURA MUNICIPAL DE MACAPÁ</p>
@@ -34,7 +36,7 @@ $html =
         </div>
         <div align='center'>
             <p> RELATÓRIO DE ACOMPANHAMENTO DE EXECUÇÃO DO PPA ___-___ - PMM</p>
-            <span>Exercício _______</span> &nbsp; &nbsp; &nbsp; <span>Quadrimestre _______</span>
+            <span>Exercício: </span> &nbsp; &nbsp; &nbsp; <span>Quadrimestre: </span>
         </div>
         <div style='margin-top: 30px; margin-left: 40px'>
             <p>1 - <b>Órgão:</b></p>

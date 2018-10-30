@@ -128,7 +128,7 @@ if (isset($_POST['pesquisar'])) {
                 <center>
                   <h3 class="box-title"><b>Relatórios - PAT</b></h3>
                   
-                  <form role="form" action="" method="post">
+                  <form role="form" action="relatorio_acompanhamento.php" method="post">
                       <div class="box-body">
                         <div class="row">
                           <div class="col-md-offset-4 col-md-4">
@@ -149,11 +149,11 @@ if (isset($_POST['pesquisar'])) {
                           <div class="col-md-offset-4 col-md-2">
                             <div class="form-group">
                               <label>Quadrimestre</label>
-                              <select class="form-control" name="status">
+                              <select class="form-control" name="quadrimestre">
                                 <option value="">Selecione</option>
-                                <option value="">Primeiro</option>
-                                <option value="">Segundo</option>
-                                <option value="">Terceiro</option>
+                                <option value="Primeiro">Primeiro</option>
+                                <option value="Segundo">Segundo</option>
+                                <option value="Terceiro">Terceiro</option>
                               </select>
                             </div>
                           </div>

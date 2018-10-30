@@ -4,7 +4,6 @@ include '../../utils/bd.php';
 include '../../utils/valida_login.php';
 
 $stmt = $conn->prepare("SELECT * FROM acao;");
-
 $stmt->execute();
 
 ?>
