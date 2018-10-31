@@ -264,7 +264,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                                         "
                                         <td>
                                           <input type='text' name='$index_meta_planejada' 
-                                          class='form-control' placeholder=''>
+                                          class='form-control' placeholder='' value='0'>
                                         </td>";
                                       }
                                     $html_iniciativas .= 
@@ -285,7 +285,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                                           $html_iniciativas .= 
                                           "<td>
                                             <input type='text' name='$index_meta_executada' 
-                                            class='form-control' placeholder=''>
+                                            class='form-control' placeholder='' value='0'>
                                           </td>";
                                         }
                                     $html_iniciativas .= 

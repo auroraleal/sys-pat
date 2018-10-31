@@ -124,16 +124,28 @@ for ($i = 1; $i <= $quantidade_iniciativas; $i++) { // i = CONTADOR DA INICIATIV
 	}
 }
 
-for ($i = 1; $i <= $quantidade_iniciativas; $i++) {
-	// LIMPA AS METAS EXISTENTES PARA A INCIATIVA
-	$stmt_clean_meta = $conn->prepare("DELETE FROM metas 
-										WHERE iniciativa_id = :iniciativa_id");
-	$stmt_clean_meta->bindParam(':iniciativa_id', $iniciativas_id[$i - 1]);
-	$stmt_clean_meta->execute();
-}
-
 for ($i = 1; $i <= $quantidade_iniciativas; $i++) { // i = CONTADOR DA INICIATIVA
-	for ($y = 1; $y <=3; $y++) { // y = CONTADOR PARA AS METAS DA INICIATIVA
+
+	$stmt_meta = $conn->prepare("SELECT id FROM metas WHERE iniciativa_id = :iniciativa_id;");
+	$stmt_meta->bindParam(':iniciativa_id', $iniciativas_id[$i - 1]);
+	$stmt_meta->execute();
+
+	$tem_metas = $stmt_meta->rowCount() > 0;
+
+	$ids_metas = "";
+	while ($row = $stmt_meta->fetch(PDO::FETCH_ASSOC)) {
+		$ids_metas .= $row['id'] . ",";
+	}
+	$ids_metas = substr($ids_metas, 0, -1); // REMOVE A ULTIMA VIRGULA DOS IDS ENCONTRADOS
+											// PARA EXECUTAR A QUERY SEM ERROS
+
+	if (strlen($ids_metas) > 1) { // SE HOUVER MAIS DE UM ID...
+		$metas_id = explode(",", $ids_metas); // ARRAY COM OS IDS DAS INICIATIVAS DA ACAO
+	} else {
+		$metas_id = array($ids_metas);
+	}
+
+	for ($y = 1; $y <= 3; $y++) { // y = CONTADOR PARA AS METAS DA INICIATIVA
 		// DEPOIS INSERE OS REGISTROS COM OS VALORES ATUALIZADOS
 		$quad_perc_plan = 'quad_perc_plan' . $i . $y;
 		$quad_perc_exec = 'quad_perc_exec' . $i . $y;
@@ -145,15 +157,30 @@ for ($i = 1; $i <= $quantidade_iniciativas; $i++) { // i = CONTADOR DA INICIATIV
 			$quad_perc_plan = 0;
 			$quad_perc_exec = 0;
 		}
+		
+		if ($tem_metas) {
+			$query = "UPDATE metas SET quadrimestre = :quadrimestre,
+						percentual_planejado = :percentual_planejado,
+						percentual_executado = :percentual_executado
+					  WHERE id = :meta_id;";
 
-		$stmt_meta = $conn->prepare("INSERT INTO metas (quadrimestre, percentual_planejado,
-														percentual_executado, iniciativa_id) 
-										VALUES(:quadrimestre, :percentual_planejado,
-												:percentual_executado, :iniciativa_id)");
-		$stmt_meta->bindParam(':quadrimestre', $y);
-		$stmt_meta->bindParam(':percentual_planejado', $quad_perc_plan);
-		$stmt_meta->bindParam(':percentual_executado', $quad_perc_exec);
-		$stmt_meta->bindParam(':iniciativa_id', $iniciativas_id[$i - 1]);
+			$stmt_meta = $conn->prepare($query);
+			$stmt_meta->bindParam(':quadrimestre', $y);
+			$stmt_meta->bindParam(':percentual_planejado', $quad_perc_plan);
+			$stmt_meta->bindParam(':percentual_executado', $quad_perc_exec);
+			$stmt_meta->bindParam(':meta_id', $metas_id[$y - 1]);
+		} else {
+			$query = "INSERT INTO metas (quadrimestre, percentual_planejado,
+						percentual_executado, iniciativa_id) 
+					  VALUES(:quadrimestre, :percentual_planejado,
+						:percentual_executado, :iniciativa_id)";
+			
+			$stmt_meta = $conn->prepare($query);
+			$stmt_meta->bindParam(':quadrimestre', $y);
+			$stmt_meta->bindParam(':percentual_planejado', $quad_perc_plan);
+			$stmt_meta->bindParam(':percentual_executado', $quad_perc_exec);
+			$stmt_meta->bindParam(':iniciativa_id', $iniciativas_id[$i - 1]);
+		}
 
 		$stmt_meta->execute();
 	}
