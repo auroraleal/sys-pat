@@ -150,13 +150,8 @@ for ($i = 1; $i <= $quantidade_iniciativas; $i++) { // i = CONTADOR DA INICIATIV
 		$quad_perc_plan = 'quad_perc_plan' . $i . $y;
 		$quad_perc_exec = 'quad_perc_exec' . $i . $y;
 
-		if (!empty($_POST[$quad_perc_plan]) && !empty($_POST[$quad_perc_exec])) {
-			$quad_perc_plan = $_POST[$quad_perc_plan];
-			$quad_perc_exec = $_POST[$quad_perc_exec];
-		} else {
-			$quad_perc_plan = 0;
-			$quad_perc_exec = 0;
-		}
+		$quad_perc_plan = $_POST[$quad_perc_plan];
+		$quad_perc_exec = $_POST[$quad_perc_exec];
 		
 		if ($tem_metas) {
 			$query = "UPDATE metas SET quadrimestre = :quadrimestre,

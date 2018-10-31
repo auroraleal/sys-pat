@@ -14,8 +14,7 @@ $orgao_id = $_POST['orgao'];
 
 $query = "SELECT o.nome AS orgao, p.nome AS programa, 
             a.nome AS acao, a.objetivo AS acao_objetivo, 
-            p.nome, p.id as programa_id ,f.nome AS fonte, f.valor AS recurso_total, 
-            pf.valor AS recurso_alocado, a.id as acao_id
+            p.nome, p.id as programa_id, a.id as acao_id
         FROM acao a
             INNER JOIN programa p
                 ON a.programa_id = p.id
@@ -23,16 +22,12 @@ $query = "SELECT o.nome AS orgao, p.nome AS programa,
                 ON po.programa_id = p.id
             INNER JOIN orgao o
                 ON po.orgao_id = o.id
-            INNER JOIN programa_has_fonte_recurso pf
-                ON p.id = pf.programa_id
-            INNER JOIN fonte_recurso f 
-                ON f.id = pf.fonte_recurso_id
             WHERE o.id = :orgao_id";
-            
+
 if (!empty($_POST['programa'])) {
     $query .= " AND p.id = " . $_POST['programa'];
 }
-if (!empty($_POST['programa'])) {
+if (!empty($_POST['ano'])) {
     $query .= " AND a.ano = " . $_POST['ano'];
 }
 
