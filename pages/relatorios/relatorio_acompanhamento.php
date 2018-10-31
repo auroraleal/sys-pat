@@ -8,8 +8,6 @@ require_once '../../utils/dompdf/autoload.inc.php';
 
 use Dompdf\Dompdf;
 
-//die(var_dump($_POST));
-
 $orgao_id = $_POST['orgao'];
 
 $query = "SELECT o.nome AS orgao, p.nome AS programa, 

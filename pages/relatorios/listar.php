@@ -194,7 +194,7 @@ if (isset($_POST['pesquisar'])) {
                         </div>
                       </div>
                       <div class="box-footer">
-                        <button name="pesquisar" type="submit" class="btn btn-success" style="margin-left: 15px">Pesquisar</button>
+                        <button name="pesquisar" formtarget="_blank" type="submit" class="btn btn-success" style="margin-left: 15px">Pesquisar</button>
                       </div>
                   </form>
                 </center>
