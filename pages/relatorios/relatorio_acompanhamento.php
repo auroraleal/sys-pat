@@ -14,7 +14,7 @@ $orgao_id = $_POST['orgao'];
 
 $query = "SELECT o.nome AS orgao, p.nome AS programa, 
             a.nome AS acao, a.objetivo AS acao_objetivo, 
-            p.nome, f.nome AS fonte, f.valor AS recurso_total, 
+            p.nome, p.id as programa_id ,f.nome AS fonte, f.valor AS recurso_total, 
             pf.valor AS recurso_alocado, a.id as acao_id
         FROM acao a
             INNER JOIN programa p
@@ -45,9 +45,16 @@ $query_iniciativa_detalhe = "SELECT DISTINCT i.justificativa_nao_executadas, i.m
                                 FROM iniciativa i
                              WHERE i.acao_id = :acao_id";
 
-$query_metas = "SELECT m.quadrimestre, m.percentual_planejado, m.percentual_executado
-                    FROM metas m
+$query_metas = "SELECT 
+                    CASE 
+                        WHEN m.quadrimestre = 1 THEN 'Primeiro'
+                        WHEN m.quadrimestre = 2 THEN 'Segundo'
+                        WHEN m.quadrimestre = 3 THEN 'Terceiro'
+                    ELSE '' END AS quadrimestre,
+                    m.percentual_planejado, m.percentual_executado
+                FROM metas m
                 WHERE m.iniciativa_id = :iniciativa_id";
+                
 if (!empty($_POST['quadrimestre'])) {
     $query_metas .= " AND m.quadrimestre = " .  $_POST['quadrimestre'];
 }
@@ -89,8 +96,8 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 <p class='cabecalho'>DEPARTAMENTO DE PLANEJAMENTO INTEGRADO</p>
             </div>
             <div align='center'>
-                <p> RELATÓRIO DE ACOMPANHAMENTO DE EXECUÇÃO DO PPA ___-___ - PMM</p>
-                <span>Exercício: " . $_POST['ano'] . "</span> &nbsp; &nbsp; &nbsp; <span>Quadrimestre: " . $_POST['quadrimestre'] . "</span>
+                <p><b> RELATÓRIO DE ACOMPANHAMENTO DE EXECUÇÃO DO PPA - PMM</b></p>
+                &nbsp;<span><b>Exercício: " . $_POST['ano'] . "</b></span>
             </div>
             <div style='margin-top: 15px;'>
                 <p>1 - <b>Órgão: </b>" . $row['orgao'] . "</p>
@@ -99,13 +106,39 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 <div style='margin-top: -15px; margin-left: 20px'>
                     <p>3.1 - <b>Objetivo: </b>" . $row['acao_objetivo'] . "</p>
                     <p>3.2 - <b>Recurso</b></p>
-                    <div style='margin-top: -15px; margin-left: 20px'> 
-                        <p><b>Total:</b> R$ " . $row['recurso_total'] . " 
-                        &nbsp; &nbsp; &nbsp;<span><b>Alocado:</b> R$" . $row['recurso_alocado'] . "</span>
-                    </div>    
-                </div>
-                <div style='margin-top: -20px'>
-                        <p>4 - <b>Iniciativas</b></p>";
+                    <div style='margin-top: 20px; margin-bottom: 20px'>";
+                    
+                    $stmt_recurso = $conn->prepare("SELECT f.nome AS fonte, 
+                            f.valor AS recurso_total,
+                            pf.valor AS recurso_alocado 
+                            FROM programa_has_fonte_recurso pf
+                            INNER JOIN programa p ON p.id = pf.programa_id
+                            INNER JOIN fonte_recurso f ON f.id = pf.fonte_recurso_id
+                            WHERE pf.programa_id = :programa_id");
+    
+                    $stmt_recurso->bindParam(':programa_id', $row['programa_id']);
+                    $stmt_recurso->execute();
+                    
+                    $tabela = 
+                        "
+                            <table>
+                                <tr>
+                                    <td><b>Fonte do Recurso</b></td>
+                                    <td><b>Recurso Total</b></td>
+                                    <td><b>Recurso Alocado</b></td>
+                                </tr>
+                        ";
+                    while ($row_recurso = $stmt_recurso->fetch(PDO::FETCH_ASSOC)) {
+                        $tabela .= '<tr>';
+                            $tabela .= "<td align='center'>" . $row_recurso['fonte'] .'</td>';
+                            $tabela .= "<td align='center'>" . $row_recurso['recurso_total'] . '</td>';
+                            $tabela .= "<td align='center'>" . $row_recurso['recurso_alocado'] . '</td>';
+                        $tabela .= '</tr>';
+                    }
+                    $tabela .= "</table>";
+
+                $html .= $tabela . "</div>    
+                        </div>";
 
                 $stmt_iniciativa = $conn->prepare($query_iniciativa);
                 if (!empty($_POST['acao'])) {
@@ -116,9 +149,12 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
                 $stmt_iniciativa->execute();
 
+                $html .= "<div style='margin-top: -20px'>
+                        <p>4 - <b>Iniciativas</b> - Quantidade: " . $stmt_iniciativa->rowCount() . "</p>";
+
                 while ($row_iniciativa = $stmt_iniciativa->fetch(PDO::FETCH_ASSOC)) {
                     $html .= "
-                        <div style='margin-top: -15px;'>
+                        <div style='margin-top: -5px;'>
                             <p><b>Descrição: </b>" . $row_iniciativa['iniciativa_descricao'] . "</p>
                         </div>
                         <table>

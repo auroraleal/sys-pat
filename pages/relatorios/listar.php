@@ -159,7 +159,7 @@ if (isset($_POST['pesquisar'])) {
                           </div>
                           <div class="col-md-2">
                             <div class="form-group">
-                              <label>Ano</label>
+                              <label>Ano <span style="color:red"> *</span></label>
                               <input type="text" class="form-control" name="ano"/>
                             </div>
                           </div>
