@@ -102,7 +102,7 @@ include '../../utils/valida_login.php';
 		        </div>
                 <!-- text input -->
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label>Orgão</label>
                         <select type="text" class="form-control" placeholder="" id="orgao" name="orgao">
@@ -116,22 +116,14 @@ include '../../utils/valida_login.php';
                     </div>
                 </div>
 
-                
             <div class="col-md-4">
-                <div class="form-group">
-                    <label>Unidade Orçamentária</label>
-                    <input disabled type="text" class="form-control" placeholder="" id="unidade_orc" name="unidade_orc">
-                </div>
-            </div>
-
-            <div class="col-md-3">
                 <div class="form-group">
                     <label>Quantidade Iniciativas</label>
                     <input type="text" class="form-control" placeholder="Digite a quantidade" name="quantidade_iniciativas">
                 </div>
             </div> 
 
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="form-group">
                   <label>Ano</label>
                   <input type="text" class="form-control" placeholder="Digite o ano" id="ano" name="ano">  
@@ -168,8 +160,7 @@ include '../../utils/valida_login.php';
                     <table>
                         <tr>
                             <td><b>Fonte do Recurso</b></td>
-                            <td><b>Recurso Total</b></td>
-                            <td><b>Recurso Alocado</b></td>
+                            <td><b>Dotação Inicial (R$)</b></td>
                         </tr>
                     </table>
                 </div>
@@ -218,15 +209,6 @@ include '../../utils/valida_login.php';
     $.get('../../controllers/subfuncao/lista-subfuncao.php?find=' + valor, function(data) {
         $('#subfuncao').find('option').remove();
         $('#subfuncao').append(data);
-    });
-  });
-
-  $(orgao).change(function () {
-    var valor = $('#orgao').find(":selected").val();
-    
-    $.get('../../controllers/orgao/lista-unidade-orcamentaria.php?find=' + valor, function(data) {
-        $('#unidade_orc').val('');
-        $('#unidade_orc').val(data);
     });
   });
 

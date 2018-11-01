@@ -3,12 +3,12 @@ session_start();
 include '../../utils/bd.php';
 
 $id = $_GET['id'];
-$stmt = $conn->prepare("DELETE FROM programa WHERE id = $id");
+$stmt = $conn->prepare("DELETE FROM fonte_recurso WHERE id = $id");
 
 try
 {
 	$stmt->execute();
-	$_SESSION['msg'] = "Programa excluído com sucesso";
+	$_SESSION['msg'] = "Fonte de Recurso excluída com sucesso";
 
 	$usuario_id = $_SESSION['id'];
 	$operpat = 'EDITAR';
@@ -27,7 +27,7 @@ try
 
 	$stmt->execute();
 
-	header("Location: ../../pages/programa/listar.php");
+	header("Location: ../../pages/recurso/listar.php");
 }
 catch(PDOException $e)
 {

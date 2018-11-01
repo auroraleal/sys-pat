@@ -73,13 +73,6 @@ include '../../utils/valida_login.php';
                       <input type="text" name= "nome" class="form-control" placeholder="Digite o nome">
                   </div>
             </div>
-
-            <div class="col-md-4">
-              <div class="form-group">
-                      <label>Unidade Orçamentária</label>
-                      <input type="text" name= "unidade_orcamentaria" class="form-control" placeholder="Digite a unidade orçamentária">
-                  </div>
-            </div>
 </div>
             <div class="box-footer">
               <button type="submit" class="btn btn-success" style="margin-left: 15px">Cadastrar</button>

@@ -12,7 +12,7 @@ if (!empty($_GET['find'])) {
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     
-    echo $row['valor'];
+    echo number_format($row['valor'], 2, ',', '.');
 } else {
     echo '';
 }

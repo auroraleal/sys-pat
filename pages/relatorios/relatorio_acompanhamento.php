@@ -100,10 +100,20 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     <p>3.1 - <b>Objetivo: </b>" . $row['acao_objetivo'] . "</p>
                     <p>3.2 - <b>Recurso</b></p>
                     <div style='margin-top: 20px; margin-bottom: 20px'>";
-                    
+
+                    $stmt_dotacao_final = $conn->prepare("SELECT SUM(valor_atual) as dotacao_final 
+                                                        FROM dotacao_orcamentaria 
+                                                    WHERE acao_id = :acao_id;");
+                    if (!empty($_POST['acao'])) {
+                        $stmt_dotacao_final->bindParam(':acao_id', $_POST['acao']);
+                    } else {
+                        $stmt_dotacao_final->bindParam(':acao_id', $row['acao_id']);
+                    }
+                    $stmt_dotacao_final->execute();
+                    $row_dotacao_final = $stmt_dotacao_final->fetch(PDO::FETCH_ASSOC);
+
                     $stmt_recurso = $conn->prepare("SELECT f.nome AS fonte, 
-                            f.valor AS recurso_total,
-                            pf.valor AS recurso_alocado 
+                            f.valor AS recurso_total
                             FROM programa_has_fonte_recurso pf
                             INNER JOIN programa p ON p.id = pf.programa_id
                             INNER JOIN fonte_recurso f ON f.id = pf.fonte_recurso_id
@@ -117,21 +127,18 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             <table>
                                 <tr>
                                     <td><b>Fonte do Recurso</b></td>
-                                    <td><b>Recurso Total</b></td>
-                                    <td><b>Recurso Alocado</b></td>
+                                    <td><b>Dotação Inicial (R$)</b></td>
                                 </tr>
                         ";
                     while ($row_recurso = $stmt_recurso->fetch(PDO::FETCH_ASSOC)) {
                         $tabela .= '<tr>';
                             $tabela .= "<td align='center'>" . $row_recurso['fonte'] .'</td>';
-                            $tabela .= "<td align='center'>" . $row_recurso['recurso_total'] . '</td>';
-                            $tabela .= "<td align='center'>" . $row_recurso['recurso_alocado'] . '</td>';
+                            $tabela .= "<td align='center'>" . number_format($row_recurso['recurso_total'], 2, ',', '.') . '</td>';                            
                         $tabela .= '</tr>';
                     }
                     $tabela .= "</table>";
 
-                $html .= $tabela . "</div>    
-                        </div>";
+                $html .= $tabela . "<br><b>Dotação Final: </b> R$ " . $row_dotacao_final['dotacao_final'] . " </div></div>";
 
                 $stmt_iniciativa = $conn->prepare($query_iniciativa);
                 if (!empty($_POST['acao'])) {

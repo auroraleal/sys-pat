@@ -96,6 +96,16 @@
             <li><a href="/sys-pat/pages/orgao/novo.php"><i class="fa fa-edit"></i>Cadastrar Orgãos</a></li>
               <li><a href="/sys-pat/pages/orgao/listar.php"><i class="fa fa-list"></i>Listar Orgãos</a></li>
             </ul>
+
+            <a href="#">
+            <i class="fa   fa-money "></i> <span>Unidade Orçamentária</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            <ul class="treeview-menu">
+            <li><a href="/sys-pat/pages/unidade-orcamentaria/novo.php"><i class="fa fa-edit"></i>Cadastrar Unidade</a></li>
+              <li><a href="/sys-pat/pages/unidade-orcamentaria/listar.php"><i class="fa fa-list"></i>Listar Unidades</a></li>
+            </ul>
             </ul>
         </li>
       <?php } ?>

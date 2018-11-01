@@ -93,16 +93,11 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
             </div>
             <div class="col-md-4">
               <div class="form-group">
-                  <label>Valor Total</label>
+                  <label>Valor Total (R$)</label>
                   <input disabled type="text" id="valor_total" name= "valor_total" class="form-control money" placeholder="">
                 </div>
             </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                  <label>Valor Alocado</label>
-                  <input type="text" name= "valor" class="form-control money" placeholder="">
-                </div>
-            </div>
+            
 </div>
             <div class="box-footer">
               <button type="submit" class="btn btn-success" style="margin-left: 15px">Cadastrar</button>

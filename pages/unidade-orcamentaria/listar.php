@@ -3,7 +3,7 @@ session_start();
 include '../../utils/bd.php';
 include '../../utils/valida_login.php';
 
-$stmt = $conn->prepare("SELECT * FROM fonte_recurso");
+$stmt = $conn->prepare("SELECT * FROM unidade_orcamentaria ;");
 $stmt->execute();
 
 ?>
@@ -68,21 +68,19 @@ $stmt->execute();
 
         </div>
         <div class="col-xs-12">
-          <a href="novo_tipo.php" class="btn btn-success" style="margin-bottom: 20px; margin-top: 20px"><i class= "fa fa-plus-square"></i> </a>
+          <a href="novo.php" class="btn btn-success" style="margin-bottom: 20px; margin-top: 20px"><i class= "fa fa-plus-square"></i> </a>
         </div>
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title"><b>Fontes de Recurso</b></h3>
+              <h3 class="box-title"><b>Lista de Unidades Orçamentárias</b></h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="tabela" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th style="text-align: center">Nome</th>
-                  <th style="text-align: center">Dotação Inicial (R$)</th>
-                  <th style="text-align: center">Ano</th>
+                  <th style="text-align: center">Unidade Orçamentária</th>
                   <th style="text-align: center">Opções</th>
                 </tr>
                 </thead>
@@ -94,9 +92,7 @@ $stmt->execute();
                       $id = $row['id'];
                       echo '<tr>';
                         echo "<td align='center'>" . $row['nome'] . '</td>';
-                        echo "<td align='center'>" . number_format($row['valor'], 2, ',', '.') . '</td>';
-                        echo "<td align='center'>" . $row['ano'] . '</td>';
-                        echo "<td align='center'>" . "<a href='../../controllers/recurso/excluir.php?id=$id' class='btn btn-danger'><i class='fa fa-trash'></i></a>";
+                        echo "<td align='center'>". "<a href='../../controllers/unidade-orcamentaria/excluir.php?id=$id' class='btn btn-danger'><i class='fa fa-trash'></i></a>";
                         echo "&nbsp&nbsp". "<a href='editar.php?id=$id' class='btn btn-default'><i class='fa fa-edit'></i></a>"  . '</td>';
                       echo '</tr>';
                     }

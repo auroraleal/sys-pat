@@ -13,8 +13,7 @@ $stmt_programa->execute();
 $row_programa = $stmt_programa->fetch(PDO::FETCH_ASSOC);
 
 $stmt = $conn->prepare("SELECT f.id as fonte_recurso_id, f.nome AS fonte, 
-                          p.nome as programa, f.valor AS recurso_total,
-                          pf.valor AS recurso_alocado 
+                          p.nome as programa, f.valor AS recurso_total
                           FROM programa_has_fonte_recurso pf
                           INNER JOIN programa p ON p.id = pf.programa_id
                           INNER JOIN fonte_recurso f ON f.id = pf.fonte_recurso_id
@@ -99,8 +98,7 @@ $stmt->execute();
                 <thead>
                 <tr>
                   <th style="text-align: center">Fonte</th>
-                  <th style="text-align: center">Recurso Total</th>
-                  <th style="text-align: center">Recurso Alocado</th>
+                  <th style="text-align: center">Dotação Inicial (R$)</th>
                   <th style="text-align: center">Opções</th>
                 </tr>
                 </thead>
@@ -112,8 +110,7 @@ $stmt->execute();
                       $fonte_recurso_id = $row['fonte_recurso_id'];
                       echo '<tr>';
                         echo "<td align='center'>" . $row['fonte'] . '</td>';
-                        echo "<td align='center'>" . $row['recurso_total'] . '</td>';
-                        echo "<td align='center'>" . $row['recurso_alocado'] . '</td>';
+                        echo "<td align='center'>" . number_format($row['recurso_total'], 2, ',', '.') . '</td>';
                         echo "<td align='center'>" . "<a href='../../controllers/programa-recurso/excluir.php?programa=$programa&fonte-recurso=$fonte_recurso_id' class='btn btn-danger'><i class='fa fa-trash'></i></a>";
                         echo "&nbsp&nbsp". "<a href='editar.php?programa=$programa&fonte-recurso=$fonte_recurso_id' class='btn btn-default'><i class='fa fa-edit'></i></a>";
                       echo '</tr>';

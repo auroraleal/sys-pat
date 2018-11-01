@@ -104,7 +104,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                           <h5 align='center' style='margin: 0 auto'><b>Dotação Orçamentária</b><h5>
                           <hr style='border: 0.5px solid black;'>
                   ";
-
+                  $dotacao_final = 0;
                   $quad = 1;
                   for ($i = 0; $i <= 2; $i++) {
                       if ($stmt_dotacao->rowCount() > 0)
@@ -143,6 +143,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                                 if (isset($dotacao)) {
                                   if ($dotacao['quadrimestre'] == $quad) {
                                       $valor_atual = $dotacao['valor_atual'];
+                                      $dotacao_final += $valor_atual;
                                       $html_dotacao .=
                                       "
                                       <td><input type='text' name='quad_".$quad."_atual' class='form-control money' placeholder='' value='$valor_atual'></td>
@@ -166,8 +167,9 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                   $html_dotacao .=
                   "
                       </div> <!-- fim row -->
-                  </div>
-                  ";
+                      <h5 align='left' style='margin-top: 20px'><b>Dotação Final: R$ " . 
+                        number_format($dotacao_final, 2, ',', '.') . 
+                      "</b><h5></div>";
 
                   echo $html_dotacao;
                 ?>

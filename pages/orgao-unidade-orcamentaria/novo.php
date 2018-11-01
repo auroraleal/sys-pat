@@ -5,19 +5,18 @@ include '../../utils/valida_login.php';
 
 $orgao_id = $_GET['id'];
 $stmt = $conn->prepare("SELECT * FROM orgao WHERE id = $orgao_id");
-$stmt_programas_vinculados = $conn->prepare("SELECT  o.id as orgao_id, p.id as programa_id, 
-                                                     p.nome as nome_programa 
-                                             FROM programa_has_orgao po
-                                              INNER JOIN programa p
-                                                ON po.programa_id = p.id
+$stmt_unidades_vinculadas = $conn->prepare("SELECT uo.nome as nome, o.id as orgao_id, uo.id as unidade_orcamentaria_id
+                                            FROM unidade_orcamentaria uo
+                                              INNER JOIN orgao_has_unidade_orcamentaria ouo
+                                                ON ouo.unidade_orcamentaria_id = uo.id
                                               INNER JOIN orgao o
-                                                ON po.orgao_id = o.id
-                                             WHERE o.id = $orgao_id");
+                                                ON ouo.orgao_id = o.id
+                                            WHERE o.id = $orgao_id");
 
 try
 {
   $stmt->execute();
-  $stmt_programas_vinculados->execute();
+  $stmt_unidades_vinculadas->execute();
   $results = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 catch(PDOException $e)
@@ -92,64 +91,52 @@ catch(PDOException $e)
             
    			<div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">Vinculação: Orgão / Programa</h3>
+              <h3 class="box-title">Vinculação: Orgão / Unidade Orçamentária</h3>
             </div>
             <!-- /.box-header -->
-            <form role="form" action="../../controllers/orgao-programa/new.php" method="post">
+            <form role="form" action="../../controllers/orgao-unidade-orcamentaria/new.php" method="post">
               <input type="hidden" value="<?=$orgao_id?>" name="orgao"/>
             <div class="box-body">
             <div id="orgao" class="col-md-10" style="margin-bottom: 20px">
               <h5>Órgão: <b><?php echo $results['nome']?></b></h5>
             </div>
+                          
             <div class="col-md-3">
               <div class="form-group">
-                  <label>Programa</label>
-                  <select class="form-control" id="programa" name="programa">
+                  <label>Unidades Orçamentárias</label>
+                  <select class="form-control" id="unidade_orcamentaria" name="unidade_orcamentaria">
                       <option value="">Selecione</option>
                       <?php
-                          foreach($conn->query('SELECT * FROM programa') as $row) {
+                          foreach($conn->query('SELECT * FROM unidade_orcamentaria') as $row) {
                               echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
                           }       
                       ?>
                   </select> 
               </div>
             </div>
-                          
-            <div id="fonte_recurso" class="col-md-6">
-                <table>
-                    <tr>
-                        <td><b>Fonte do Recurso</b></td>
-                        <td><b>Dotação Inicial (R$)</b></td>
-                   </tr>
-                </table>
-            </div>
 
             <div id="orgao" class="col-md-10" style="margin-top: 10px"> 
 
-              <h4><b>Programas Vinculados</b></h4>
+              <h4><b>Unidades Orçamentárias Vinculados</b></h4>
               <hr/>
               <table id="tabela" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th style="text-align: center">Programa</th>
+                  <th style="text-align: center">Unidade Orçamentária</th>
                   <th style="text-align: center">Opções</th>
                 </tr>
                 </thead>
                 <tbody>
                   <?php
-                    while ($row = $stmt_programas_vinculados->fetch(PDO::FETCH_ASSOC))
+                    while ($row = $stmt_unidades_vinculadas->fetch(PDO::FETCH_ASSOC))
                     {
-                      $nome_programa = $row['nome_programa'];
                       $orgao_id    = $row['orgao_id'];
-                      $programa_id = $row['programa_id'];
+                      $unidade_orcamentaria_id = $row['unidade_orcamentaria_id'];
                       echo '<tr>';
-                        echo "<input type='hidden' value='$nome_programa' id='nome_programa'/>";
-                        echo "<input type='hidden' value='$programa_id' id='programa_id'/>";
-                        echo "<td align='center'>" . $nome_programa . '</td>';
+                        echo "<td align='center'>" . $row['nome'] . '</td>';
                         echo "<td align='center'>";
                         ?>
-                          <a href='#' id='btn_detalhes' data-toggle='modal' data-target='#myModal' class='btn btn-info' title='Detalhes'><i class='fa fa-eye'></i></a>&nbsp&nbsp
-                          <a onclick="return confirm('Deseja realmente desvincular programa?');" href='../../controllers/orgao-programa/excluir.php?orgao=<?=$orgao_id?>&programa=<?=$programa_id?>' class='btn btn-danger'><i class='fa fa-trash'></i></a>
+                          <a onclick="return confirm('Deseja realmente desvinclar Unidade Orçamentária?');" href='../../controllers/orgao-unidade-orcamentaria/excluir.php?orgao=<?=$orgao_id?>&unidade=<?=$unidade_orcamentaria_id?>' class='btn btn-danger'><i class='fa fa-trash'></i></a>
                       <?php                          
                         echo '</td>';
                       echo '</tr>';

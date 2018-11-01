@@ -3,11 +3,9 @@ session_start();
 include '../../utils/bd.php';
 include '../../utils/valida_login.php';
 
-$stmt = $conn->prepare("INSERT INTO orgao(nome, unidade_orcamentaria) values(:nome, :unidade_orcamentaria)");
+$stmt = $conn->prepare("INSERT INTO orgao(nome) values(:nome)");
 
 $stmt->bindParam(':nome', $_POST['nome']);
-$stmt->bindParam(':unidade_orcamentaria', $_POST['unidade_orcamentaria']);
-
 try
 {
 	$stmt->execute();

@@ -10,7 +10,7 @@ include '../../utils/valida_login.php';
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Sys-PAT</title>
-  <link href="/e-conv/imagens/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+  <link href="/sys-pat/imagens/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -61,39 +61,19 @@ include '../../utils/valida_login.php';
             
    			<div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">Cadastrar Nova Fonte de Recurso</h3>
+              <h3 class="box-title">Cadastrar Unidade Orçamentária</h3>
             </div>
             <!-- /.box-header -->
-            <form role="form" action="../../controllers/recurso/new_tipo.php" method="post">
+            <form role="form" action="../../controllers/unidade-orcamentaria/new.php" method="post">
             <div class="box-body">
-            <div class="col-md-12">
-                <div class="form-group">
-                  <center>
-                    <span style="font-style:italic; color: red">Para fontes de recurso que tenham o mesmo nome em Órgãos diferentes, usar o padrão [órgão]-[fonte]</span>
-                    <br>
-                    <span style="font-style:italic; color: red">Ex: SEMPLA-TESOURO</span>
-                  </center>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                    <label>Nome</label>
-                    <input type="text" name= "nome" class="form-control" placeholder="">
+              
+            <div class="col-md-4">
+              <div class="form-group">
+                      <label>Unidade Orçamentária</label>
+                      <input type="text" name= "nome" class="form-control" placeholder="Digite o nome">
                   </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                    <label>Dotação Inicial (R$)</label>
-                    <input type="text" name= "valor" class="form-control money" placeholder="">
-                  </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                    <label>Ano</label>
-                    <input type="text" name= "ano" class="form-control" placeholder="">
-                  </div>
-              </div>
             </div>
+</div>
             <div class="box-footer">
               <button type="submit" class="btn btn-success" style="margin-left: 15px">Cadastrar</button>
             </div>
@@ -113,8 +93,6 @@ include '../../utils/valida_login.php';
 
 <!-- jQuery 3 -->
 <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
-<script src="../../assets/js/jquery.mask.min.js"></script>
-
 <!-- Bootstrap 3.3.7 -->
 <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- SlimScroll -->
@@ -127,10 +105,8 @@ include '../../utils/valida_login.php';
 <script src="../../dist/js/demo.js"></script>
 <script>
   $(document).ready(function () {
-    $('.sidebar-menu').tree();
-    $('.date').mask('00/00/0000');
-    $('.money').mask('000.000.000.000.000,00', {reverse: true});
-  });
+    $('.sidebar-menu').tree()
+  })
 </script>
 </body>
 </html>

@@ -3,13 +3,14 @@ session_start();
 include '../../utils/bd.php';
 include '../../utils/valida_login.php';
 
-$stmt = $conn->prepare("INSERT INTO fonte_recurso (nome, valor) 
-values(:nome, :valor)");
+$stmt = $conn->prepare("INSERT INTO fonte_recurso (nome, valor, ano) 
+values(:nome, :valor, :ano)");
 
 $valor = str_replace(',','.', str_replace('.','', $_POST['valor']));
 
 $stmt->bindParam(':nome', $_POST['nome']);
 $stmt->bindParam(':valor', $valor);
+$stmt->bindParam(':ano', $_POST['ano']);
 
 try
 {
