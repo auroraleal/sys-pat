@@ -147,11 +147,6 @@ include '../../utils/valida_login.php';
                         <label>Programa</label>
                         <select class="form-control" id="programa" name="programa">
                             <option value="">Selecione</option>
-                            <?php
-                                foreach($conn->query('SELECT * FROM programa') as $row) {
-                                    echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
-                                }       
-                            ?>
                         </select> 
                     </div>
                 </div>
@@ -218,6 +213,15 @@ include '../../utils/valida_login.php';
     $.get('../../controllers/programa-recurso/lista-recursos-programa.php?find=' + valor, function(data) {
         $('#fonte_recurso').empty();
         $('#fonte_recurso').append(data);
+    });
+  });
+
+    $(orgao).change(function () {
+    var valor = $('#orgao').find(":selected").val();
+    
+    $.get('../../controllers/orgao-programa/lista-programas-orgao.php?find=' + valor, function(data) {
+        $('#programa').empty();
+        $('#programa').append(data);
     });
   });
 </script>

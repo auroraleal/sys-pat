@@ -4,7 +4,7 @@ include '../../utils/bd.php';
 include '../../utils/valida_login.php'; 
 
 $id = $_GET['id'];
-$stmt = $conn->prepare("SELECT * FROM programa WHERE id = $id");
+$stmt = $conn->prepare("SELECT * FROM subfuncao WHERE id = $id");
 
 try
 {
@@ -24,8 +24,8 @@ catch(PDOException $e)
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SYS-PAT</title>
-  <link href="/sys-pat/imagens/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+  <title>Sys-PAT</title>
+  <link href="/e-conv/imagens/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -76,23 +76,38 @@ catch(PDOException $e)
             
    			<div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">Editar Programa</h3>
+              <h3 class="box-title">Editar Subfunção</h3>
             </div>
             <!-- /.box-header -->
-            <form role="form" action="../../controllers/programa/editar.php" method="post">
-              <input type="hidden" name="id" value="<?=$id?>"/>
+            <form role="form" action="../../controllers/subfuncao/editar.php" method="post">
+            <input type="hidden" value="<?=$id?>" name="id"/>
             <div class="box-body">
-              
-            <div class="col-md-6">
-              <div class="form-group">
-                      <label>Nome</label>
-                      <input type="text" name= "nome" value="<?=$results['nome']?>" class="form-control" placeholder="Digite o nome">
+              <div class="col-md-3">
+                  <div class="form-group">
+                      <label>Função</label>
+                      <select type="text" class="form-control" placeholder="" name="funcao_id">
+                          <option value=""> Selecione </option>
+                          <?php
+                            foreach($conn->query('SELECT * FROM funcao') as $row) {
+                              if ($row['id'] == $results['funcao_id']) {
+                                echo '<option selected value="'.$row['id'].'">'.$row['nome'].'</option>';
+                              } else {
+                                echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
+                              }
+                            }       
+                          ?>
+                      </select>
                   </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                        <label>Nome</label>
+                        <input type="text" name="nome" class="form-control" placeholder="Digite o nome" value="<?=$results['nome']?>">
+                    </div>
+              </div>
             </div>
-
-</div>
             <div class="box-footer">
-              <button type="submit" class="btn btn-success" style="margin-left: 15px">Salvar</button>
+              <button type="submit" class="btn btn-success" style="margin-left: 15px">Atualizar</button>
             </div>
 
 </form>
@@ -126,5 +141,4 @@ catch(PDOException $e)
   })
 </script>
 </body>
-</html>
-  
+</input>

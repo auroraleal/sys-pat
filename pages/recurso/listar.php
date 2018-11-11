@@ -3,7 +3,13 @@ session_start();
 include '../../utils/bd.php';
 include '../../utils/valida_login.php';
 
-$stmt = $conn->prepare("SELECT * FROM fonte_recurso");
+if (isset($_POST['ano'])) {
+  $ano = $_POST['ano'];
+} else {
+  $ano = date('Y');
+}
+
+$stmt = $conn->prepare("SELECT * FROM fonte_recurso WHERE ano = $ano");
 $stmt->execute();
 
 ?>
@@ -73,7 +79,22 @@ $stmt->execute();
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title"><b>Fontes de Recurso</b></h3>
+            <h3 class="box-title"><b>Fontes de Recurso</b></h3>
+              <form role="form" action="" method="post">
+                <div class="col-md-offset-4 col-md-3">
+                  <div class="form-group">
+                      <label>Ano</label>
+                      <input type="text" name="ano" class="form-control" placeholder=""/>
+                    </div>
+                </div>
+                <div class="col-md-1" style="margin-left: -20px; margin-top: 25px">
+                  <div class="form-group">
+                  <button type="submit" class="btn btn-success" value="Salvar">
+                    <span class="fa fa-search"></span>
+                  </button>
+                  </div>
+                </div>
+              </form>
             </div>
             <!-- /.box-header -->
             <div class="box-body">

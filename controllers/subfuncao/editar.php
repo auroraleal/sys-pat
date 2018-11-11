@@ -3,12 +3,13 @@ session_start();
 include '../../utils/bd.php';
 include '../../utils/valida_login.php';
 
-$stmt = $conn->prepare("UPDATE sunfuncao SET nome = :nome WHERE id = :id ");
-
-$id = $_POST['id'];
+$stmt = $conn->prepare("UPDATE subfuncao 
+							SET nome = :nome, funcao_id = :funcao_id 
+						WHERE id = :id ");
 
 $stmt->bindParam(':nome', $_POST['nome']);
-$stmt->bindParam(':id', $id);
+$stmt->bindParam(':funcao_id', $_POST['funcao_id']);
+$stmt->bindParam(':id', $_POST['id']);
 
 try
 {
