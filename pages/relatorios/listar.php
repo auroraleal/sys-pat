@@ -150,10 +150,10 @@ if (isset($_POST['pesquisar'])) {
                             <div class="form-group">
                               <label>Quadrimestre</label>
                               <select class="form-control" name="quadrimestre">
-                                <option value="">Selecione</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
+                                <option value="">TODOS</option>
+                                <option value="1">PRIMEIRO</option>
+                                <option value="2">SEGUNDO</option>
+                                <option value="3">TERCEIRO</option>
                               </select>
                             </div>
                           </div>
