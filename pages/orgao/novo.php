@@ -73,6 +73,12 @@ include '../../utils/valida_login.php';
                       <input type="text" name= "nome" class="form-control" placeholder="Digite o nome">
                   </div>
             </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                      <label>Sigla</label>
+                      <input type="text" name= "sigla" class="form-control" placeholder="Digite a sigla">
+                  </div>
+            </div>
 </div>
             <div class="box-footer">
               <button type="submit" class="btn btn-success" style="margin-left: 15px">Cadastrar</button>

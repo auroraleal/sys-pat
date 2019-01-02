@@ -137,7 +137,7 @@ if (isset($_POST['pesquisar'])) {
                               <select class="form-control" name="programa">
                                 <option value="">Selecione</option>
                                 <?php
-                                    foreach($conn->query('SELECT * FROM programa') as $row) {
+                                    foreach($conn->query('SELECT * FROM programa ORDER BY nome') as $row) {
                                         echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
                                     }       
                                 ?>
@@ -171,7 +171,7 @@ if (isset($_POST['pesquisar'])) {
                               <select class="form-control" name="orgao">
                                 <option value="">Selecione</option>
                                 <?php
-                                    foreach($conn->query('SELECT * FROM orgao') as $row) {
+                                    foreach($conn->query('SELECT * FROM orgao ORDER BY nome') as $row) {
                                         echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
                                     }       
                                 ?>
@@ -184,7 +184,7 @@ if (isset($_POST['pesquisar'])) {
                               <select class="form-control" name="acao">
                                 <option value="">Selecione</option>
                                 <?php
-                                    foreach($conn->query('SELECT * FROM acao') as $row) {
+                                    foreach($conn->query('SELECT * FROM acao ORDER BY nome') as $row) {
                                         echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
                                     }       
                                 ?>

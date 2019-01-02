@@ -3,7 +3,17 @@ session_start();
 include '../../utils/bd.php';
 include '../../utils/valida_login.php';
 
-$stmt = $conn->prepare("SELECT * FROM acao;");
+if (isset($_POST['ano'])) {
+  $ano = $_POST['ano'];
+} else {
+  $ano = date('Y');
+}
+
+$stmt = $conn->prepare("SELECT a.id, a.nome as acao, a.ano, p.nome as programa, o.sigla as                              orgao FROM acao a
+                        INNER JOIN programa p ON p.id = a.programa_id
+                        INNER JOIN programa_has_orgao po ON po.programa_id = p.id
+                        INNER JOIN orgao o ON po.orgao_id = o.id
+                        WHERE a.ano = $ano");
 $stmt->execute();
 
 ?>
@@ -74,7 +84,21 @@ $stmt->execute();
             <div class="box">
               <div class="box-header">
                 <h3 class="box-title"><b>Lista de Ações</b></h3>
-                <p style="margin-top: 10px"><b>Total: <?php echo $stmt->rowCount(); ?> registro(s)</b></p>
+                <form role="form" action="" method="post">
+                <div class="col-md-offset-4 col-md-3">
+                  <div class="form-group">
+                      <label>Ano</label>
+                      <input type="text" name="ano" class="form-control" placeholder=""/>
+                    </div>
+                </div>
+                <div class="col-md-1" style="margin-left: -20px; margin-top: 25px">
+                  <div class="form-group">
+                  <button type="submit" class="btn btn-success" value="Salvar">
+                    <span class="fa fa-search"></span>
+                  </button>
+                  </div>
+                </div>
+              </form>
               </div>
             
             <!-- /.box-header -->
@@ -82,8 +106,10 @@ $stmt->execute();
               <table id="tabela" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th style="text-align: center">Ação</th>
                   <th style="text-align: center">Ano</th>
+                  <th style="text-align: center">Ação</th>
+                  <th style="text-align: center">Órgão</th>
+                  <!--th style="text-align: center">Órgão</th-->
                   <th style="text-align: center">Opções</th>
           
                 </tr>
@@ -94,15 +120,18 @@ $stmt->execute();
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
                     {
                       $id = $row['id'];
-                      $nome = $row['nome'];
+                      $acao = $row['acao'];
                       echo '<tr>';
-                      echo "<td align='center'>" . $row['nome'] .'</td>';
                       echo "<td align='center'>" . $row['ano'] . '</td>';
+                      echo "<td align='center'>" . $row['acao'] .'</td>';
+                      //echo "<td align='center'>" . $row['programa'] .'</td>';
+                      echo "<td align='center'>" . $row['orgao'] .'</td>';
+                      
                   ?>
                   <!--td align='center'><a onclick="return confirm('Deseja realmente excluir?');" href='../../controllers/acao/excluir.php?id=<//?=$id?>' class='btn btn-danger'><i class='fa fa-trash'></i></a-->
                   <?php     
-                     echo "&nbsp&nbsp" . "<td align='center'><a href='/sys-pat/pages/iniciativa/nova.php?id=$id' title='Iniciativas' class='btn btn-success'><i class='fa fa-folder-o'></i></a>";
-                      echo '</td>';
+                     echo "&nbsp&nbsp" . "<td align='center'><a href='../iniciativa/nova.php?id=$id' title='Iniciativas' class='btn btn-success'><i class='fa fa-folder-o'></i></a>";
+                     echo "&nbsp&nbsp". "<a href='../acao-recurso/listar.php?acao=$id' title='Alocar Recursos' class='btn btn-info'><i class='fa fa-usd'></i></a>"  . '</td>';
                       echo '</tr>';
                     }
                   ?>
@@ -152,7 +181,7 @@ $stmt->execute();
         "sInfo": "Mostrando _START_ / _END_ de _TOTAL_ registro(s)",
         "sInfoEmpty": "Mostrando 0 / 0 de 0 registros",
         "sInfoFiltered": "(filtrado de _MAX_ registros)",
-        "sSearch": "Pesquisar: ",
+        "sSearch": "Filtrar: ",
         "oPaginate": {
             "sFirst": "Início",
             "sPrevious": "Anterior",

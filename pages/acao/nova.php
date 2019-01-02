@@ -85,7 +85,7 @@ include '../../utils/valida_login.php';
 		                  <select class="form-control" id="funcao" name="funcao">
 		                    <option value="">Selecione</option>
                             <?php
-                                foreach($conn->query('SELECT * FROM funcao') as $row) {
+                                foreach($conn->query('SELECT * FROM funcao ORDER BY nome') as $row) {
                                     echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
                                 }       
                             ?>
@@ -108,7 +108,7 @@ include '../../utils/valida_login.php';
                         <select type="text" class="form-control" placeholder="" id="orgao" name="orgao">
                             <option value=""> Selecione </option>
                             <?php
-                                foreach($conn->query('SELECT * FROM orgao') as $row) {
+                                foreach($conn->query('SELECT * FROM orgao ORDER BY nome') as $row) {
                                     echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
                                 }       
                             ?>
@@ -129,35 +129,31 @@ include '../../utils/valida_login.php';
                   <input type="text" class="form-control" placeholder="Digite o ano" id="ano" name="ano">  
 		        </div>
             </div>
-            <div class="col-md-3 col-md-offset-3">
+            <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Programa</label>
+                        <select class="form-control" id="programa" name="programa">
+                        <option value=""> Selecione </option>
+                            <?php
+                                foreach($conn->query('SELECT * FROM programa ORDER BY nome') as $row) {
+                                    echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
+                                }       
+                            ?>
+                        </select>
+                    </div>
+                </div>
+            <div class="col-md-4">
 		        	<div class="form-group">
                   		<label>Período Início</label>
 		                <input type="date" class="form-control" name="periodo_inicio">  
                 	</div>
                 </div>              
 
-                <div class="col-md-3">
+                <div class="col-md-4">
 		        	<div class="form-group">
                   		<label>Período Fim</label>
 		                <input type="date" class="form-control" name="periodo_fim">  
                 	</div>
-                </div>
-                <div class="col-md-3 col-md-offset-2">
-                    <div class="form-group">
-                        <label>Programa</label>
-                        <select class="form-control" id="programa" name="programa">
-                            <option value="">Selecione</option>
-                        </select> 
-                    </div>
-                </div>
-                
-                <div id="fonte_recurso" class="col-md-6">
-                    <table>
-                        <tr>
-                            <td><b>Fonte do Recurso</b></td>
-                            <td><b>Dotação Inicial (R$)</b></td>
-                        </tr>
-                    </table>
                 </div>
             <div class="col-md-12">
                 <div class="form-group">
@@ -206,16 +202,6 @@ include '../../utils/valida_login.php';
         $('#subfuncao').append(data);
     });
   });
-
-  $(programa).change(function () {
-    var valor = $('#programa').find(":selected").val();
-    
-    $.get('../../controllers/programa-recurso/lista-recursos-programa.php?find=' + valor, function(data) {
-        $('#fonte_recurso').empty();
-        $('#fonte_recurso').append(data);
-    });
-  });
-
     $(orgao).change(function () {
     var valor = $('#orgao').find(":selected").val();
     

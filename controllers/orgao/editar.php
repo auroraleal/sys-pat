@@ -3,11 +3,12 @@ session_start();
 include '../../utils/bd.php';
 include '../../utils/valida_login.php';
 
-$stmt = $conn->prepare("UPDATE orgao SET nome = :nome WHERE id = :id ");
+$stmt = $conn->prepare("UPDATE orgao SET nome = :nome, sigla = :sigla WHERE id = :id ");
 
 $id = $_POST['id'];
 
 $stmt->bindParam(':nome', $_POST['nome']);
+$stmt->bindParam(':sigla', $_POST['sigla']);
 
 $stmt->bindParam(':id', $id);
 

@@ -79,7 +79,7 @@ if (count($rs_iniciativa) == 0) {
 }
 
 // BUSCA AS INICIATIVAS RELACIONADAS COM A AÇÃO EM QUESTÃO
-$query_id_iniciativas = "SELECT id FROM pat.iniciativa where acao_id = :acao_id;";
+$query_id_iniciativas = "SELECT id FROM iniciativa where acao_id = :acao_id;";
 $stmt_ini = $conn->prepare($query_id_iniciativas);
 $stmt_ini->bindParam(':acao_id', $acao_id);
 $stmt_ini->execute();

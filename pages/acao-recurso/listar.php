@@ -3,23 +3,25 @@ session_start();
 include '../../utils/bd.php';
 include '../../utils/valida_login.php';
 
-$programa = $_GET['programa'];
+$acao = $_GET['acao'];
 
-$stmt_programa = $conn->prepare("SELECT * FROM programa WHERE id = :id;");
+$stmt_acao = $conn->prepare("SELECT a.id, a.nome, a.ano, p.nome as programa FROM acao a
+                              INNER JOIN programa p ON p.id = a.programa_id
+                             WHERE a.id = :id;");
 
-$stmt_programa->bindParam(':id', $programa);
-$stmt_programa->execute();
+$stmt_acao->bindParam(':id', $acao);
+$stmt_acao->execute();
 
-$row_programa = $stmt_programa->fetch(PDO::FETCH_ASSOC);
+$row_acao = $stmt_acao->fetch(PDO::FETCH_ASSOC);
 
 $stmt = $conn->prepare("SELECT f.id as fonte_recurso_id, f.nome AS fonte, 
-                          p.nome as programa, f.valor AS recurso_total
-                          FROM programa_has_fonte_recurso pf
-                          INNER JOIN programa p ON p.id = pf.programa_id
+                          p.nome as acao, f.valor AS recurso_total
+                          FROM acao_has_fonte_recurso pf
+                          INNER JOIN acao p ON p.id = pf.acao_id
                           INNER JOIN fonte_recurso f ON f.id = pf.fonte_recurso_id
-                          WHERE pf.programa_id = :programa;");
+                          WHERE pf.acao_id = :acao;");
 
-$stmt->bindParam(':programa', $programa);
+$stmt->bindParam(':acao', $acao);
 $stmt->execute();
 
 ?>
@@ -84,7 +86,7 @@ $stmt->execute();
 
         </div>
         <div class="col-xs-12">
-          <a href="novo.php?programa=<?=$programa?>" class="btn btn-success" style="margin-bottom: 20px; margin-top: 20px"><i class= "fa fa-plus-square"></i> </a>
+          <a href="novo.php?id=<?=$acao?>" class="btn btn-success" style="margin-bottom: 20px; margin-top: 20px"><i class= "fa fa-plus-square"></i> </a>
         </div>
         <div class="col-xs-12">
           <div class="box">
@@ -93,7 +95,8 @@ $stmt->execute();
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <h4 class="box-title"><b>Programa: <?php echo $row_programa['nome']?></b></h4>
+              <h4 class="box-title"><b>Programa:</b> <?php echo $row_acao['programa']?></h4> <br>
+              <h4 class="box-title"><b>Ação:</b> <?php echo $row_acao['nome']?></h4> <br>
               <table id="tabela" class="table table-bordered table-striped">
                 <thead>
                 <tr>
@@ -111,9 +114,8 @@ $stmt->execute();
                       echo '<tr>';
                         echo "<td align='center'>" . $row['fonte'] . '</td>';
                         echo "<td align='center'>" . number_format($row['recurso_total'], 2, ',', '.') . '</td>';
-                        echo "<td align='center'>" . "<a href='../../controllers/programa-recurso/excluir.php?programa=$programa&fonte-recurso=$fonte_recurso_id' class='btn btn-danger'><i class='fa fa-trash'></i></a>";
-                        echo "&nbsp&nbsp". "<a href='editar.php?programa=$programa&fonte-recurso=$fonte_recurso_id' class='btn btn-default'><i class='fa fa-edit'></i></a>";
-                      echo '</tr>';
+                        echo "<td align='center'>" . "<a href='../../controllers/acao-recurso/excluir.php?acao=$acao&fonte-recurso=$fonte_recurso_id' class='btn btn-danger'><i class='fa fa-trash'></i></a></td>";
+                     echo '</tr>';
                     }
                   ?>
                 </tbody>

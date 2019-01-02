@@ -93,8 +93,7 @@ $stmt->execute();
                       echo '<tr>';
                         echo "<td align='center'>" . $row['nome'] . '</td>';
                         echo "<td align='center'>" . "<a href='../../controllers/programa/excluir.php?id=$id' class='btn btn-danger'><i class='fa fa-trash'></i></a>";
-                        echo "&nbsp&nbsp". "<a href='editar.php?id=$id' class='btn btn-default'><i class='fa fa-edit'></i></a>";
-                        echo "&nbsp&nbsp". "<a href='../programa-recurso/listar.php?programa=$id' title='Alocar Recursos' class='btn btn-success'><i class='fa fa-usd'></i></a>"  . '</td>';
+                        echo "&nbsp&nbsp". "<a href='editar.php?id=$id' class='btn btn-default'><i class='fa fa-edit'></i></a>" . '</td>';
                       echo '</tr>';
                     }
                   ?>

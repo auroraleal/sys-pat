@@ -1,26 +1,26 @@
 <?php
 session_start();
 include '../../utils/bd.php';
-include '../../utils/valida_login.php';
 
-$stmt = $conn->prepare("INSERT INTO programa_has_fonte_recurso(programa_id, 
-							fonte_recurso_id) 
-values(:programa_id, :fonte_recurso_id)");
+$acao_id = $_GET['acao'];
+$fonte_recurso_id = $_GET['fonte-recurso'];
 
-$programa_id = $_POST['programa'];
+$stmt = $conn->prepare("DELETE FROM acao_has_fonte_recurso 
+						WHERE acao_id = :acao_id
+						AND   fonte_recurso_id = :fonte_recurso_id");
 
-$stmt->bindParam(':programa_id', $programa_id);
-$stmt->bindParam(':fonte_recurso_id', $_POST['fonte']);
+$stmt->bindParam(':acao_id', $acao_id);
+$stmt->bindParam(':fonte_recurso_id', $fonte_recurso_id);
 
 try
 {
 	$stmt->execute();
-	$_SESSION['msg'] = "Nova alocação de recurso cadastrada com sucesso";
-/*
-	$usuario_id = $_SESSION['id'];
+	$_SESSION['msg'] = "Alocação de Recurso para a Ação excluída com sucesso";
+
+	/*$usuario_id = $_SESSION['id'];
 	$operpat = 'EDITAR';
 	$registro = json_encode($_POST);
-	$tipo_registro = 'TIPO CONVENIO';
+	$tipo_registro = 'PROGRAMA';
 	$data_operpat = date("Y-m-d H:i:s");
 
 	$stmt = $conn->prepare("INSERT INTO log(usuario_id, operpat, registro, tipo_registro, data_operpat) 
@@ -31,10 +31,10 @@ try
 	$stmt->bindParam(':data_operpat', $data_operpat);
 	$stmt->bindParam(':registro', $registro);
 	$stmt->bindParam(':tipo_registro', $tipo_registro);
-*/
-	$stmt->execute();
 
-	header("Location: ../../pages/programa-recurso/listar.php?programa=$programa_id");
+	$stmt->execute();*/
+
+	header("Location: ../../pages/acao-recurso/listar.php?acao=$acao_id");
 }
 catch(PDOException $e)
 {

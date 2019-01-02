@@ -81,6 +81,7 @@ $stmt->execute();
                 <thead>
                 <tr>
                   <th style="text-align: center">Orgão</th>
+                  <th style="text-align: center">Sigla</th>
                   <th style="text-align: center">Opções</th>
                 </tr>
                 </thead>
@@ -92,6 +93,7 @@ $stmt->execute();
                       $id = $row['id'];
                       echo '<tr>';
                         echo "<td align='center'>" . $row['nome'] . '</td>';
+                        echo "<td align='center'>" . $row['sigla'] . '</td>';
                         echo "<td align='center'>" . "<a href='../orgao-programa/novo.php?id=$id' title='Programas' class='btn btn-info'><i class='fa fa-archive'></i></a>";
                         echo "&nbsp&nbsp". "<a href='../orgao-unidade-orcamentaria/novo.php?id=$id' title='Unidade Orçamentária' class='btn btn-success'><i class='fa fa-money'></i></a>";
                         echo "&nbsp&nbsp". "<a href='../../controllers/orgao/excluir.php?id=$id' class='btn btn-danger'><i class='fa fa-trash'></i></a>";

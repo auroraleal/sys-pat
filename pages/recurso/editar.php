@@ -79,7 +79,7 @@ catch(PDOException $e)
               <h3 class="box-title">Editar Fonte de Recurso</h3>
             </div>
             <!-- /.box-header -->
-            <form role="form" action="../../controllers/programa/editar.php" method="post">
+            <form role="form" action="../../controllers/recurso/editar.php" method="post">
               <input type="hidden" name="id" value="<?=$id?>"/>
             <div class="box-body">
               
@@ -116,6 +116,7 @@ catch(PDOException $e)
 
 <!-- jQuery 3 -->
 <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../../assets/js/jquery.mask.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- SlimScroll -->
@@ -130,6 +131,13 @@ catch(PDOException $e)
   $(document).ready(function () {
     $('.sidebar-menu').tree()
   })
+</script>
+<script>
+  $(document).ready(function () {
+    $('.sidebar-menu').tree();
+    $('.date').mask('00/00/0000');
+    $('.money').mask('000.000.000.000.000,00', {reverse: true});
+  });
 </script>
 </body>
 </html>

@@ -3,11 +3,13 @@ session_start();
 include '../../utils/bd.php';
 include '../../utils/valida_login.php'; 
 
-$programa = $_GET['programa'];
+$acao = $_GET['id'];
 
-$stmt = $conn->prepare("SELECT * FROM programa WHERE id = :id;");
+$stmt = $conn->prepare("SELECT a.id, a.nome, a.ano, p.nome as programa FROM acao a
+                          INNER JOIN programa p ON p.id = a.programa_id
+                        WHERE a.id = :id;");
 
-$stmt->bindParam(':id', $programa);
+$stmt->bindParam(':id', $acao);
 $stmt->execute();
 
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -73,10 +75,11 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
               <h3 class="box-title">Alocação de Recursos</h3>
             </div>
             <!-- /.box-header -->
-            <form role="form" action="../../controllers/programa-recurso/new_tipo.php" method="post">
+            <form role="form" action="../../controllers/acao-recurso/new_tipo.php" method="post">
             <div class="box-body">
-            <input type="hidden" name= "programa" value="<?=$programa?>">
-            <h4><b>Programa: <?php echo $row['nome']?></b></h4>
+            <input type="hidden" name= "acao_id" value="<?=$acao?>">
+            <h4 class="box-title"><b>Programa:</b> <?php echo $row['programa']?></h4>
+            <h4 class="box-title"><b>Ação:</b> <?php echo $row['nome']?></h4>
             <br>
             <div class="col-md-4">
               <div class="form-group">

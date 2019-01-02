@@ -91,6 +91,12 @@ catch(PDOException $e)
                       <input type="text" name= "nome" value="<?=$results['nome']?>" class="form-control" placeholder="Digite o nome">
                   </div>
             </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                      <label>Sigla</label>
+                      <input type="text" name= "sigla" value="<?=$results['sigla']?>" class="form-control" placeholder="Digite a sigla">
+                  </div>
+            </div>
 
 </div>
             <div class="box-footer">

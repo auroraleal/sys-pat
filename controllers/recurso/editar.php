@@ -3,18 +3,20 @@ session_start();
 include '../../utils/bd.php';
 include '../../utils/valida_login.php';
 
-$stmt = $conn->prepare("UPDATE programa SET nome = :nome WHERE id = :id ");
+$stmt = $conn->prepare("UPDATE fonte_recurso SET nome = :nome, valor = :valor WHERE id = :id ");
 
 $id = $_POST['id'];
+$valor = str_replace(',','.', str_replace('.','', $_POST['valor']));
 
 $stmt->bindParam(':nome', $_POST['nome']);
+$stmt->bindParam(':valor', $valor);
 $stmt->bindParam(':id', $id);
 
 try
 {
 	$stmt->execute();
-	$_SESSION['msg'] = "Programa editado com sucesso";
-
+	$_SESSION['msg'] = "Recurso editado com sucesso";
+/*
 	$usuario_id = $_SESSION['id'];
 	$operpat = 'EDITAR';
 	$registro = json_encode($_POST);
@@ -30,9 +32,9 @@ try
 	$stmt->bindParam(':registro', $registro);
 	$stmt->bindParam(':tipo_registro', $tipo_registro);
 
-	$stmt->execute();
+	$stmt->execute();*/
 
-	header("Location: ../../pages/programa/listar.php?id=$id");
+	header("Location: ../../pages/recurso/listar.php?id=$id");
 }
 catch(PDOException $e)
 {

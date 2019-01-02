@@ -109,17 +109,18 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     } else {
                         $stmt_dotacao_final->bindParam(':acao_id', $row['acao_id']);
                     }
+
                     $stmt_dotacao_final->execute();
                     $row_dotacao_final = $stmt_dotacao_final->fetch(PDO::FETCH_ASSOC);
 
                     $stmt_recurso = $conn->prepare("SELECT f.nome AS fonte, 
-                            f.valor AS recurso_total
-                            FROM programa_has_fonte_recurso pf
-                            INNER JOIN programa p ON p.id = pf.programa_id
-                            INNER JOIN fonte_recurso f ON f.id = pf.fonte_recurso_id
-                            WHERE pf.programa_id = :programa_id");
+                    f.valor AS recurso_total
+                    FROM acao_has_fonte_recurso af
+                    INNER JOIN acao a ON a.id = af.acao_id
+                    INNER JOIN fonte_recurso f ON f.id = af.fonte_recurso_id
+                    WHERE af.acao_id = :acao_id");
     
-                    $stmt_recurso->bindParam(':programa_id', $row['programa_id']);
+                    $stmt_recurso->bindParam(':acao_id', $row['acao_id']);
                     $stmt_recurso->execute();
                     
                     $tabela = 
