@@ -3,8 +3,8 @@ session_start();
 include '../../utils/bd.php';
 include '../../utils/valida_login.php';
 
-if (isset($_POST['ano'])) {
-  $ano = $_POST['ano'];
+if (isset($_GET['ano'])) {
+  $ano = $_GET['ano'];
 } else {
   $ano = date('Y');
 }
@@ -22,8 +22,8 @@ $stmt->execute();
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Sys-PAT</title>
-  <link href="/sys-pat/imagens/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+  <title>Acompanha-Macapá</title>
+  <link href="/imagens/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -84,7 +84,7 @@ $stmt->execute();
             <div class="box">
               <div class="box-header">
                 <h3 class="box-title"><b>Lista de Ações</b></h3>
-                <form role="form" action="" method="post">
+                <form role="form" action="" method="get">
                 <div class="col-md-offset-4 col-md-3">
                   <div class="form-group">
                       <label>Ano</label>

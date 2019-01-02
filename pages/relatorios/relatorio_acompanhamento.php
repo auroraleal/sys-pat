@@ -22,6 +22,9 @@ $query = "SELECT o.nome AS orgao, p.nome AS programa,
                 ON po.orgao_id = o.id
             WHERE o.id = :orgao_id";
 
+if (!empty($_POST['acao'])) {
+    $query .= " AND a.id = " . $_POST['acao'];
+}
 if (!empty($_POST['programa'])) {
     $query .= " AND p.id = " . $_POST['programa'];
 }
@@ -139,7 +142,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     }
                     $tabela .= "</table>";
 
-                $html .= $tabela . "<br><b>Dotação Final: </b> R$ " . $row_dotacao_final['dotacao_final'] . " </div></div>";
+                $html .= $tabela . "<br><b>Dotação Final: </b> R$ " . number_format($row_dotacao_final['dotacao_final'], 2, ',', '.') . " </div></div>";
 
                 $stmt_iniciativa = $conn->prepare($query_iniciativa);
                 if (!empty($_POST['acao'])) {
