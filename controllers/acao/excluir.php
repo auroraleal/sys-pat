@@ -2,8 +2,25 @@
 session_start();
 include '../../utils/bd.php';
 
-$id = $_GET['id'];
+$id = $_GET['acao'];
+
+if (isset($_GET['ano'])) {
+	$ano = $_GET['ano'];
+} else {
+	$ano = date('Y');
+}
+
+$stmt = $conn->prepare("DELETE FROM acao_has_fonte_recurso WHERE acao_id = $id");
+$stmt->execute();
+$stmt = $conn->prepare("DELETE FROM dotacao_orcamentaria WHERE acao_id = $id");
+$stmt->execute();
+$stmt = $conn->prepare("DELETE FROM metas WHERE iniciativa_id IN 
+							(SELECT id FROM iniciativa WHERE acao_id = $id)");
+$stmt->execute();
+$stmt = $conn->prepare("DELETE FROM iniciativa WHERE acao_id = $id");
+$stmt->execute();
 $stmt = $conn->prepare("DELETE FROM acao WHERE id = $id");
+$stmt->execute();
 
 // LOG
 // -----
@@ -17,7 +34,7 @@ $tipo_registro = 'CONVENIO';*/
 try
 {
 	$stmt->execute();
-	$_SESSION['msg'] = "pat excluído com sucesso";
+	$_SESSION['msg'] = "Ação excluída com sucesso";
 
 	// LOG
 	// --------
@@ -33,7 +50,7 @@ try
 	$stmt->execute();*/
 	// ----------------
 
-	header("Location: ../../pages/acao/listar.php");
+	header("Location: ../../pages/acao/listar.php?ano=$ano");
 }
 catch(PDOException $e)
 {

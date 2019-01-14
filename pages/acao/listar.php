@@ -9,10 +9,10 @@ if (isset($_GET['ano'])) {
   $ano = date('Y');
 }
 
-$stmt = $conn->prepare("SELECT a.id, a.nome as acao, a.ano, p.nome as programa, o.sigla as                              orgao FROM acao a
+$stmt = $conn->prepare("SELECT a.id, a.nome AS acao, a.ano, 
+                               p.nome AS programa, o.sigla AS                              orgao FROM acao a
                         INNER JOIN programa p ON p.id = a.programa_id
-                        INNER JOIN programa_has_orgao po ON po.programa_id = p.id
-                        INNER JOIN orgao o ON po.orgao_id = o.id
+                        LEFT JOIN orgao o ON a.orgao_id = o.id
                         WHERE a.ano = $ano");
 $stmt->execute();
 
@@ -108,15 +108,14 @@ $stmt->execute();
                 <tr>
                   <th style="text-align: center">Ano</th>
                   <th style="text-align: center">Ação</th>
+                  <th style="text-align: center">Programa</th>
                   <th style="text-align: center">Órgão</th>
-                  <!--th style="text-align: center">Órgão</th-->
                   <th style="text-align: center">Opções</th>
           
                 </tr>
                 </thead>
                 <tbody>
                   <?php
-                  
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
                     {
                       $id = $row['id'];
@@ -124,14 +123,18 @@ $stmt->execute();
                       echo '<tr>';
                       echo "<td align='center'>" . $row['ano'] . '</td>';
                       echo "<td align='center'>" . $row['acao'] .'</td>';
-                      //echo "<td align='center'>" . $row['programa'] .'</td>';
+                      echo "<td align='center'>" . $row['programa'] .'</td>';
                       echo "<td align='center'>" . $row['orgao'] .'</td>';
                       
                   ?>
                   <!--td align='center'><a onclick="return confirm('Deseja realmente excluir?');" href='../../controllers/acao/excluir.php?id=<//?=$id?>' class='btn btn-danger'><i class='fa fa-trash'></i></a-->
                   <?php     
-                     echo "&nbsp&nbsp" . "<td align='center'><a href='../iniciativa/nova.php?id=$id' title='Iniciativas' class='btn btn-success'><i class='fa fa-folder-o'></i></a>";
-                     echo "&nbsp&nbsp". "<a href='../acao-recurso/listar.php?acao=$id' title='Alocar Recursos' class='btn btn-info'><i class='fa fa-usd'></i></a>"  . '</td>';
+                     echo "<td align='center'><a href='../iniciativa/nova.php?id=$id' title='Iniciativas' class='btn btn-success'><i class='fa fa-folder-o'></i></a>";
+                     echo "&nbsp&nbsp". "<a href='../acao-recurso/listar.php?acao=$id' title='Alocar Recursos' class='btn btn-info'><i class='fa fa-usd'></i></a>";
+                     echo "&nbsp&nbsp". "<a href='editar.php?id=$id' class='btn btn-default'><i class='fa fa-edit'></i></a>&nbsp";
+                  ?>
+                     <a onclick="return confirm('Deseja realmente excluir?')" href="../../controllers/acao/excluir.php?acao=<?=$id?>" title='Alocar Recursos' class='btn btn-danger'><i class='fa fa-trash'></i></a></td>
+                  <?php
                       echo '</tr>';
                     }
                   ?>

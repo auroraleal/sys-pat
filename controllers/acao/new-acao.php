@@ -7,9 +7,9 @@ if (isset($_SESSION['perfil'])){
 	$perfil = $_SESSION ['perfil'];
 }
 
-$stmt = $conn->prepare("INSERT INTO acao (nome, programa_id, funcao_id, subfuncao_id,
+$stmt = $conn->prepare("INSERT INTO acao (nome, programa_id, orgao_id, funcao_id, subfuncao_id,
  resultado, ano, objetivo, periodo_inicio, periodo_fim, quantidade_iniciativas) 
-values(:nome, :programa_id, :funcao_id, :subfuncao_id, :resultado, :ano, :objetivo, 
+values(:nome, :programa_id, :orgao_id, :funcao_id, :subfuncao_id, :resultado, :ano, :objetivo, 
 :periodo_inicio, :periodo_fim,  :quantidade_iniciativas)");
 
 // Não precisa mais converter. Já está sendo usado o calendário do HTML
@@ -19,6 +19,7 @@ values(:nome, :programa_id, :funcao_id, :subfuncao_id, :resultado, :ano, :objeti
 //$valor_global = str_replace(',','.', str_replace('.','', $_POST['recurso']));
 $stmt->bindParam(':nome',  $_POST['nome']);
 $stmt->bindParam(':programa_id', $_POST['programa']);
+$stmt->bindParam(':orgao_id', $_POST['orgao']);
 $stmt->bindParam(':funcao_id', $_POST['funcao']);
 $stmt->bindParam(':subfuncao_id',  $_POST['subfuncao']);
 $stmt->bindParam(':resultado', $_POST['resultado']);

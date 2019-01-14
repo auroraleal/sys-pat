@@ -2,6 +2,20 @@
 session_start();
 include '../../utils/bd.php'; 
 include '../../utils/valida_login.php';
+
+$id = $_GET['id'];
+$stmt = $conn->prepare("SELECT * FROM acao WHERE id = $id");
+
+try
+{
+  $stmt->execute();
+  $results = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+catch(PDOException $e)
+{
+  $_SESSION['erro'] = "Erro: " . $e->getMessage();
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -67,18 +81,18 @@ include '../../utils/valida_login.php';
             
    			<div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">Cadastrar Nova Ação</h3>
+              <h3 class="box-title">Editar Ação</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <form role="form" action="../../controllers/acao/new-acao.php" method="post">
-              	<div class="col-md-4">
-    	        		<div class="form-group">
-                        <label>Ação</label>
-                        <input type="text" class="form-control" placeholder="Digite a ação" name="nome">
-                     </div>
-		        </div>
-                    
+              <form role="form" action="../../controllers/acao/editar.php" method="post">
+                    <input type="hidden" name="id" value="<?=$id?>"/>
+                    <div class="col-md-4">
+                            <div class="form-group">
+                            <label>Ação</label>
+                            <input type="text" class="form-control" placeholder="Digite a ação" name="nome" value="<?=$results['nome']?>">
+                        </div>
+                    </div>
                     <div class="col-md-4">
 		        	<div class="form-group">
                   		<label>Função</label>
@@ -86,7 +100,11 @@ include '../../utils/valida_login.php';
 		                    <option value="">Selecione</option>
                             <?php
                                 foreach($conn->query('SELECT * FROM funcao ORDER BY nome') as $row) {
-                                    echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
+                                    if ($row['id'] == $results['funcao_id']) {
+                                        echo '<option selected value="'.$row['id'].'">'.$row['nome'].'</option>';
+                                    } else {
+                                        echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
+                                    }
                                 }       
                             ?>
 		                  </select>
@@ -96,7 +114,14 @@ include '../../utils/valida_login.php';
 		        	<div class="form-group">
                   		<label>Subfunção</label>
 		                  <select class="form-control" id="subfuncao" name="subfuncao">
-		                    <option value="">Selecione</option>
+                            <option value="">Selecione</option>
+                            <?php
+                                foreach($conn->query('SELECT * FROM subfuncao ORDER BY nome') as $row) {
+                                    if ($row['id'] == $results['subfuncao_id']) {
+                                        echo '<option selected value="'.$row['id'].'">'.$row['nome'].'</option>';
+                                    }
+                                }       
+                            ?>
 		                  </select>
                 	</div>
 		        </div>
@@ -109,7 +134,11 @@ include '../../utils/valida_login.php';
                             <option value=""> Selecione </option>
                             <?php
                                 foreach($conn->query('SELECT * FROM orgao ORDER BY nome') as $row) {
-                                    echo '<option value="'.$row['id'].'">'.$row['sigla'].'</option>';
+                                    if ($row['id'] == $results['orgao_id']) {
+                                        echo '<option selected value="'.$row['id'].'">'.$row['sigla'].'</option>';
+                                    } else {
+                                        echo '<option value="'.$row['id'].'">'.$row['sigla'].'</option>';
+                                    }
                                 }       
                             ?>
                         </select>
@@ -119,24 +148,29 @@ include '../../utils/valida_login.php';
             <div class="col-md-4">
                 <div class="form-group">
                     <label>Quantidade Iniciativas</label>
-                    <input type="text" class="form-control" placeholder="Digite a quantidade" name="quantidade_iniciativas">
+                    <input disabled type="text" class="form-control" placeholder="Digite a quantidade" 
+                    name="quantidade_iniciativas" value="<?=$results['quantidade_iniciativas']?>">
                 </div>
             </div> 
 
             <div class="col-md-4">
                 <div class="form-group">
                   <label>Ano</label>
-                  <input type="text" class="form-control" placeholder="Digite o ano" id="ano" name="ano">  
+                  <input type="text" class="form-control" placeholder="Digite o ano" id="ano" name="ano" value="<?=$results['ano']?>">  
 		        </div>
             </div>
             <div class="col-md-4">
                     <div class="form-group">
                         <label>Programa</label>
                         <select class="form-control" id="programa" name="programa">
-                        <option value=""> Selecione </option>
+                            <option value=""> Selecione </option>
                             <?php
                                 foreach($conn->query('SELECT * FROM programa ORDER BY nome') as $row) {
-                                    echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
+                                    if ($row['id'] == $results['programa_id']) {
+                                        echo '<option selected value="'.$row['id'].'">'.$row['nome'].'</option>';
+                                    } else {
+                                        echo '<option value="'.$row['id'].'">'.$row['nome'].'</option>';
+                                    }
                                 }       
                             ?>
                         </select>
@@ -145,32 +179,32 @@ include '../../utils/valida_login.php';
             <div class="col-md-4">
 		        	<div class="form-group">
                   		<label>Período Início</label>
-		                <input type="date" class="form-control" name="periodo_inicio">  
+		                <input type="date" class="form-control" name="periodo_inicio" value="<?=$results['periodo_inicio']?>">  
                 	</div>
                 </div>              
 
                 <div class="col-md-4">
 		        	<div class="form-group">
                   		<label>Período Fim</label>
-		                <input type="date" class="form-control" name="periodo_fim">  
+		                <input type="date" class="form-control" name="periodo_fim" value="<?=$results['periodo_fim']?>">  
                 	</div>
                 </div>
             <div class="col-md-12">
                 <div class="form-group">
                   <label>Objetivo</label>
-                  <textarea class="form-control" rows="5" placeholder="" name="objetivo"></textarea>
+                  <textarea class="form-control" rows="5" placeholder="" name="objetivo"><?=$results['objetivo']?></textarea>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">
                   <label>Resultado Esperado</label>
-                  <textarea class="form-control" rows="5" placeholder="" name="resultado"></textarea>
+                  <textarea class="form-control" rows="5" placeholder="" name="resultado"><?=$results['resultado']?></textarea>
                 </div>
             </div>
             </div>
             
             <div class="box-footer">
-              <button type="submit" class="btn btn-success" style="margin-left: 15px">Cadastrar</button>
+              <button type="submit" class="btn btn-success" style="margin-left: 15px">Editar</button>
             </div>
 
 </form>
