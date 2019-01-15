@@ -1,5 +1,13 @@
 <header class="main-header">
-
+<style>
+  @media (min-width: 200px) {
+    .ocultar-mobile{display: none;}
+  }
+  @media (min-width: 600px) {
+    .form-cadastro {margin-left: 100px;}
+  }
+  
+</style>
     <!-- Logo -->
     <a href="/sys-pat/pages/index.php" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -14,22 +22,21 @@
       <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
-      <ul class="nav navbar-nav navbar-left">
-        <li>
-          <a href="/sys-pat/pages/acao/listar.php"><icon class="fa fa-archive"></icon> Listar Todas as Ações </a>
-        </li>
-    </ul>
+      
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Notifications: style can be found in dropdown.less -->
           <!-- User Account: style can be found in dropdown.less -->
-                    
-            </a>
+          <ul class="nav navbar-nav navbar-left">
+            <li>
+              <a href="/sys-pat/pages/acao/listar.php"><icon class="fa fa-archive"></icon> <span class="ocultar-mobile">Listar Todas as Ações</span> </a>
+            </li>
+          </ul>
           </li>
           <li class="dropdown user user-menu">
             <a href="#">
-              <icon class="fa fa-user"></icon> <?php echo $_SESSION['email'] . ' - ' . $_SESSION['perfil']; ?>
+              <icon class="fa fa-user"></icon> <?php echo $_SESSION['email'] ?> <span class="ocultar-mobile"><?php echo ' - ' . $_SESSION['perfil'];?></span>
             </a>
           </li>
           <!-- Control Sidebar Toggle Button -->

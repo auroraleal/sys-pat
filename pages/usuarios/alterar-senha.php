@@ -72,7 +72,7 @@ $result = $stmt->fetch(PDO::FETCH_ASSOC);
   <?php } ?>
 	        <!-- left column -->
 
-    	<div style="margin-left: 100px" class="col-md-10">
+    	<div class="col-md-10 form-cadastro">
           <!-- general form elements -->
           <center>
    			<div class="box box-success">

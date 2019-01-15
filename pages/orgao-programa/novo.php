@@ -87,7 +87,7 @@ catch(PDOException $e)
     	<div class="row">
 	        <!-- left column -->
 
-    	<div style="margin-left: 100px" class="col-md-10">
+    	<div class="col-md-10 form-cadastro">
           <!-- general form elements -->
             
    			<div class="box box-success">
@@ -98,7 +98,7 @@ catch(PDOException $e)
             <form role="form" action="../../controllers/orgao-programa/new.php" method="post">
               <input type="hidden" value="<?=$orgao_id?>" name="orgao"/>
             <div class="box-body">
-            <div id="orgao" class="col-md-10" style="margin-bottom: 20px">
+            <div id="orgao" class="col-md-10 form-cadastro" style="margin-bottom: 20px">
               <h5>Órgão: <b><?php echo $results['nome']?></b></h5>
             </div>
             <div class="col-md-3">
@@ -124,7 +124,7 @@ catch(PDOException $e)
                 </table>
             </div>
 
-            <div id="orgao" class="col-md-10" style="margin-top: 10px"> 
+            <div id="orgao" class="col-md-10 form-cadastro" style="margin-top: 10px"> 
 
               <h4><b>Programas Vinculados</b></h4>
               <hr/>
